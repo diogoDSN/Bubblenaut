@@ -1,4 +1,4 @@
-local menu_screen = require("lua.screens.menu_screen")
+local menu_screen = require("lua.screens.menu_screen.init_screen")
 
 local M = {}
 
