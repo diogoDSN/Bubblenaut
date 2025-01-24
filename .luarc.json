@@ -1,0 +1,8 @@
+{
+	"runtime.special": {
+		"love.filesystem.load": "loadfile"
+	},
+	"workspace.userThirdParty": [
+		"~/dotfiles/neovim/.config/nvim/lua/lsp_configs/lua_addons"
+	]
+}
