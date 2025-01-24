@@ -6,14 +6,15 @@ local M = {}
 local left_movement_enabled = true
 local right_movement_enabled = true
 
-
+local left_wall = 0
+local right_wall = 1024
 
 function love.keypressed(key)
-    if key == configs.controls.move_left_key and left_movement_enabled then
+    if key == configs.controls.move_left_key and left_movement_enabled and objects.bubble.center_x - objects.bubble.step > left_wall then
         objects.bubble.center_x = objects.bubble.center_x - objects.bubble.step
         left_movement_enabled = false
     end
-    if key == configs.controls.move_right_key and right_movement_enabled then
+    if key == configs.controls.move_right_key and right_movement_enabled and objects.bubble.center_x + objects.bubble.step < right_wall then
         objects.bubble.center_x = objects.bubble.center_x + objects.bubble.step
         right_movement_enabled = false
     end
