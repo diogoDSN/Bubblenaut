@@ -11,6 +11,7 @@ M.steps = {
     bubble_step = 50,
     step_increase_factor = 1.1,
     step_reduction_factor = 0.9,
+    animation_step = 10,
 }
 
 M.sizes = {
