@@ -1,18 +1,19 @@
+local game_screen = require("lua.screens.game_screen")
 local M = {}
 
-M.bubble = {
-    center_x = 1200,
-    center_y = 800,
-    inner_radius = 50,
-    outer_radius = 52,
-    speed = 250,
+local noScreen = {
+	load = function ()
+		print "This screen has no load function."
+	end,
+	draw = function ()
+		print "This screen has no draw function."
+	end,
+	-- Update functions should return a new screen in case we change screen
+	update = function (dt)
+		print "This screen has no update function."
+		return nil
+	end
 }
 
-M.set_bubble_initial_state = function()
-    local bubble_initial_x = love.graphics.getWidth() / 2
-    local bubble_initial_y = love.graphics.getHeight() / 2
-    M.bubble.center_x = bubble_initial_x
-    M.bubble.center_y = bubble_initial_y
-end
-
+M.screen = game_screen
 return M
