@@ -1,4 +1,4 @@
-require "lua.bubble.bubble"
+require "lua.state"
 
 function love.update(dt)
     if love.keyboard.isDown("right") then

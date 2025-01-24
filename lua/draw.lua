@@ -1,4 +1,4 @@
-require "lua.bubble.bubble"
+require "lua.state"
 
 function love.draw()
     local width = love.graphics.getWidth()
