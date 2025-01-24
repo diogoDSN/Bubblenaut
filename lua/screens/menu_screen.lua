@@ -1,6 +1,6 @@
 local M = {}
 
-game_screen = require "lua/screens/game_screen"
+game_screen = require "lua/screens/game_screen/init_screen"
 
 M.load = function ()
     print("Menu screen loaded")
