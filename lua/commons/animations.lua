@@ -4,7 +4,7 @@ local M = {}
 local animation = {}
 
 --- Function that should be called at every screen draw
----@overload fun(x: number, y:number)
+---@overload fun(x: number, y:number, scale_x:number, scale_y:number)
 function animation:draw() end
 
 --- Function that should be called at every screen update with a valid
@@ -20,6 +20,8 @@ function animation:start() end
 ---@param height number # the height of a frame
 ---@param pos_x number # the X position for drawing
 ---@param pos_y number # the Y position for drawing
+---@param pivot_x number # the X position of the pivot
+---@param pivot_y number # the Y position of the pivot
 ---@param duration number # how long the animation plays
 ---@param pre_started boolean # if the animation starts right away or is in the first frame until start() is called
 ---@param repeatable boolean # if the anmiation is repeatable or only plays once
@@ -31,6 +33,8 @@ local new_animation = function(
     height,
     pos_x,
     pos_y,
+    pivot_x,
+    pivot_y,
     duration,
     pre_started,
     repeatable,
@@ -58,14 +62,14 @@ local new_animation = function(
     sound_track:setPitch(sound_duration / duration)
     animation.sound_track = sound_track
 
-    function animation.draw(self, x, y)
+    function animation.draw(self, x, y, scale_x, scale_y)
         local sprite_n = math.floor(self.current_time / self.duration * #self.quads) + 1
 
         if sprite_n > self.quad_n then
             sprite_n = self.quad_n
         end
-
-        love.graphics.draw(self.sprite_sheet, self.quads[sprite_n], x or pos_x, y or pos_y, 0, 1)
+        
+        love.graphics.draw(self.sprite_sheet, self.quads[sprite_n], x or pos_x, y or pos_y, 0, scale_x, scale_y, pivot_x, pivot_y)
     end
 
     function animation.update(self, dt)

@@ -6,24 +6,22 @@ local M = {}
 M.expanded_bubble_boundary_circle = function(bubble)
     local expansion_factor = configs.sizes.expansion_factor
 
-    local new_inner_radius = bubble.inner_radius * expansion_factor
-    local new_outer_radius = bubble.outer_radius * expansion_factor
+    local new_radius = bubble.radius * expansion_factor
     return {
         center_x = bubble.center_x,
         center_y = bubble.center_y,
-        radius = 2 * new_outer_radius - new_inner_radius
+        radius = new_radius
     }
 end
 
 M.shrunken_bubble_boundary_circle = function(bubble)
     local shrink_factor = configs.sizes.shrink_factor
 
-    local new_inner_radius = bubble.inner_radius * shrink_factor
-    local new_outer_radius = bubble.outer_radius * shrink_factor
+    local new_radius = bubble.radius * shrink_factor
     return {
         center_x = bubble.center_x,
         center_y = bubble.center_y,
-        radius = 2 * new_outer_radius - new_inner_radius
+        radius = new_radius
     }
 end
 
@@ -32,7 +30,7 @@ M.bubble_can_move = function(bubble, position)
     local final_circle = {
         center_x = position.x,
         center_y = position.y,
-        radius = bubble.outer_radius + bubble:get_outer_line_width() / 2
+        radius = bubble.radius
     }
     return M.circle_inside_screen(final_circle)
 end

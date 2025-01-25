@@ -17,8 +17,6 @@ M.bubble_movement = {
 local scroll_speed = 100 -- pixels per second
 local scroll_ratio = 1.5 -- scroll distance per second compared to bubble size
 
-local debug_prints = false
-
 M.on_move_left_key_press = function()
     if not M.bubble_movement.sideways_movement_locked then
         local animation_step = configs.steps.animation_step
@@ -66,13 +64,7 @@ M.on_move_right_key_press = function()
 end
 
 
-
 M.handle_movement = function(dt)
-    if debug_prints then
-        print(1 / dt, "fps")
-    end
-
-
     if #M.bubble_movement.positions > 0 then
         local next_position = M.bubble_movement.positions[1]
         objects.bubble:move(next_position)
@@ -88,15 +80,6 @@ M.handle_movement = function(dt)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:grow()
         end
-
-        if not sounds.inflating:isPlaying() then
-            love.audio.play(sounds.inflating)
-        end
-    else
-        if sounds.inflating:isPlaying() then
-            love.audio.pause(sounds.inflating)
-            sounds.inflating:seek(0, "seconds")
-        end
     end
 
     if love.keyboard.isDown(configs.controls.shrink_key) then
@@ -104,27 +87,12 @@ M.handle_movement = function(dt)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:shrink()
         end
-
-        if not sounds.deflating:isPlaying() then
-            love.audio.play(sounds.deflating)
-        end
-    else
-        if sounds.deflating:isPlaying() then
-            love.audio.pause(sounds.deflating)
-            sounds.inflating:seek(0, "seconds")
-        end
     end
 
-    objects.bubble.inner_radius = utils.clamp(
-        objects.bubble.inner_radius,
-        configs.sizes.min_inner_radius,
-        configs.sizes.max_inner_radius
-    )
-
-    objects.bubble.outer_radius = utils.clamp(
-        objects.bubble.outer_radius,
-        configs.sizes.min_outer_radius,
-        configs.sizes.max_outer_radius
+    objects.bubble.radius = utils.clamp(
+        objects.bubble.radius,
+        configs.sizes.min_radius,
+        configs.sizes.max_radius
     )
 
     objects.bubble.step = utils.clamp(
@@ -133,7 +101,7 @@ M.handle_movement = function(dt)
         configs.steps.max_step
     )
 
-    scroll_speed = objects.bubble.inner_radius * scroll_ratio
+    scroll_speed = objects.bubble.radius * scroll_ratio
 
     for _, spike in ipairs(objects.obstacles) do
         spike[2] = spike[2] + scroll_speed * dt
