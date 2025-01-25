@@ -68,14 +68,14 @@ M.handle_movement = function(dt)
         objects.bubble.sideways_movement_locked = false
     end
 
-    if love.keyboard.isDown(configs.controls.grow_key) then
+    if utils.is_growth() then
         local new_bubble_boundary_circle = utils.expanded_bubble_boundary_circle(objects.bubble)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:grow()
         end
     end
 
-    if love.keyboard.isDown(configs.controls.shrink_key) then
+    if utils.is_shrink() then
         local new_bubble_boundary_circle = utils.shrunken_bubble_boundary_circle(objects.bubble)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:shrink()

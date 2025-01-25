@@ -1,13 +1,13 @@
 local movement = require("lua.screens.game_screen.components.movement.movement")
 local objects = require("lua.screens.game_screen.components.objects")
 local colisions = require("lua.screens.game_screen.components.colisions")
-local graphics = require("lua.screens.game_screen.components.graphics")
 local background = require("lua.screens.game_screen.components.background")
 local utils = require("lua.screens.game_screen.components.movement.utils")
 require("lua.audio.mic")
 local sounds = require("lua.screens.game_screen.components.sounds")
 local conf = require "conf"
 local configs = require("lua.screens.game_screen.config")
+local router = require("lua.commons.router")
 
 local M = {}
 
@@ -20,6 +20,11 @@ M.load = function()
     print("Game screen loaded")
 
     background.setup_background()
+
+    M.beamer = router.new_beamer(
+        "game_over_screen",
+        0.3
+    )
 end
 
 -- function to run when love updates the game state, runs before drawing
@@ -46,12 +51,17 @@ M.update = function(dt)
 
     if colisions.applyColisions() then
         objects.game_state = "game_over_screen"
+        objects.pop_animation:start()
+        objects.pop_animation:update(dt)
     end
 
-    if objects.game_state == "" then
-        return nil
-    else
-        return objects.game_state
+    if objects.game_state ~= "" then
+        M.beamer:activate(objects.game_state)
+    end
+
+    local next_screen = M.beamer:update(dt)
+    if next_screen ~= nil then
+        return next_screen
     end
 end
 
