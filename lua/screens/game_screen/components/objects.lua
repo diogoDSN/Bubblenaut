@@ -12,6 +12,16 @@ M.bubble = {
     step = 0,
 }
 
+function M.bubble.growExpFactor(self, expansion_factor)
+    local step_increase_factor = configs.steps.step_increase_factor
+
+    local new_radius = self.radius * expansion_factor
+
+    self.radius = new_radius
+
+    self.step = self.step * step_increase_factor
+end
+
 function M.bubble.grow(self)
     local expansion_factor = configs.sizes.expansion_factor
     local step_increase_factor = configs.steps.step_increase_factor
@@ -52,7 +62,7 @@ M.draw_bubble = function()
 end
 
 M.update_bubble_animation = function(dt)
-	M.bubble_animation:update(dt)
+    M.bubble_animation:update(dt)
 end
 
 local spike_radius = 50
@@ -86,20 +96,20 @@ M.setupGame = function()
     M.bubble.radius = 52
     M.bubble.step = 50
 
-	local bubble_sprite_height = M.bubble.sprite:getHeight()
-	local center_x = bubble_sprite_height / 2
+    local bubble_sprite_height = M.bubble.sprite:getHeight()
+    local center_x = bubble_sprite_height / 2
     local center_y = bubble_sprite_height / 2
 
-	M.bubble_animation = animations.new_animation(
-    	M.bubble.sprite,                                      -- sprite
-		128, 128,                                             -- sprite size
-		M.bubble.center_x, M.bubble.center_y,                 -- position
-		center_x, center_y, 				                  -- pivot
-		0.5,                                                  -- duration
-		true,							                      -- started
-		true,                                                 -- repeatable
-		sounds.game_over                                      -- sound
-	)
+    M.bubble_animation = animations.new_animation(
+        M.bubble.sprite,                      -- sprite
+        128, 128,                             -- sprite size
+        M.bubble.center_x, M.bubble.center_y, -- position
+        center_x, center_y,                   -- pivot
+        0.5,                                  -- duration
+        true,                                 -- started
+        true,                                 -- repeatable
+        sounds.game_over                      -- sound
+    )
 
     M.obstacles = {
         -- {x, y} coordinates relative to the whole level

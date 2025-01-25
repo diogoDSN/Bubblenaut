@@ -13,7 +13,7 @@ M.load = function()
     objects.setupGame()
     Init_time = love.timer.getTime()
     Mic, LastSecondData = Initialize_audio_input()
-	background.setup_background()
+    background.setup_background()
 end
 
 -- function to run when love updates the game state, runs before drawing
@@ -21,9 +21,12 @@ M.update = function(dt)
     movement.handle_movement(dt)
     -- Processes audio every second and resets timer
     if math.floor(math.fmod(love.timer.getTime() - Init_time, 10)) == 1 then
-        Process_audio(Mic, LastSecondData)
+        objects.bubble.shrink(objects.bubble)
+        local amp = Process_audio(Mic, LastSecondData)
         Init_time = love.timer.getTime()
-	background.update_background()
+        objects.bubble.growExpFactor(objects.bubble, amp)
+    end
+    background.update_background()
 
     objects.update_bubble_animation(dt)
 
@@ -44,7 +47,7 @@ M.draw = function()
     love.graphics.print("A Bubble", width / 10, height / 10)
 
     -- Background
-	background.draw_backgroud()
+    background.draw_backgroud()
 
     -- Bubble
     objects.draw_bubble()
