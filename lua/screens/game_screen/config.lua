@@ -17,14 +17,11 @@ M.steps = {
 }
 
 M.sizes = {
-    initial_inner_radius = 50,
-    initial_outer_radius = 52,
+    initial_radius = 52,
     expansion_factor = 1.1,
     shrink_factor = 0.9,
-    max_inner_radius = 200,
-    max_outer_radius = 208,
-    min_inner_radius = 10,
-    min_outer_radius = 10.4,
+    max_radius = 208,
+    min_radius = 10.4,
 }
 
 return M
