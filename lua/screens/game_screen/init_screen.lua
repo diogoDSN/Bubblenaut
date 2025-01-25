@@ -2,12 +2,14 @@ local movement = require("lua.screens.game_screen.components.movement")
 local objects = require("lua.screens.game_screen.components.objects")
 local graphics = require("lua.screens.game_screen.components.graphics")
 
+local bubble_y_offset = love.graphics.getHeight() / 2
+
 local M = {}
 
 -- runs once when opening the game screen
 M.load = function()
     objects.bubble.center_x = love.graphics.getWidth() / 2
-    objects.bubble.center_y = love.graphics.getHeight() / 2
+    objects.bubble.center_y = love.graphics.getHeight() / 2 + bubble_y_offset
 end
 
 -- function to run when love updates the game state, runs before drawing
@@ -24,11 +26,20 @@ M.draw = function()
     love.graphics.setColor(1, 1, 1)
     love.graphics.print("A Bubble", width / 10, height / 10)
 
+    -- Bubble
     love.graphics.setColor(1, 1, 1)
     love.graphics.setLineWidth(graphics.bubble_outer_line_width(objects.bubble))
     love.graphics.circle("line", objects.bubble.center_x, objects.bubble.center_y, objects.bubble.outer_radius)
     love.graphics.setColor(0.2, 0.2, 1, 0.5)
     love.graphics.circle("fill", objects.bubble.center_x, objects.bubble.center_y, objects.bubble.inner_radius)
+
+    -- Spike
+    love.graphics.setColor(graphics.spike_line_color(objects.spike))
+    love.graphics.setLineWidth(graphics.spike_outer_line_width(objects.spike))
+    love.graphics.circle("line", objects.spike.center_x, objects.spike.center_y, objects.spike.outer_radius)
+    love.graphics.setColor(graphics.spike_fill_color(objects.spike))
+    love.graphics.circle("fill", objects.spike.center_x, objects.spike.center_y, objects.spike.inner_radius)
+
 end
 
 return M

@@ -9,6 +9,8 @@ local right_movement_enabled = true
 local left_wall = 0
 local right_wall = 1024
 
+local scroll_speed = 50 -- pixels per second
+
 function love.keypressed(key)
     if key == configs.controls.move_left_key and left_movement_enabled and objects.bubble.center_x - objects.bubble.step > left_wall then
         objects.bubble.center_x = objects.bubble.center_x - objects.bubble.step
@@ -48,6 +50,9 @@ M.handle_movement = function(dt)
 
         objects.bubble.step = objects.bubble.step * step_reduction_factor
     end
+
+    objects.spike.center_y = objects.spike.center_y + scroll_speed * dt
+    
 end
 
 return M
