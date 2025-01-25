@@ -6,6 +6,11 @@ local graphics = require("lua.screens.game_screen.components.graphics")
 
 local M = {}
 
+-- please have only one state with a true value
+M.game_state = {
+    running = true,
+}
+
 local left_movement_enabled = true
 local right_movement_enabled = true
 

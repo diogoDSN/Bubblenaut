@@ -13,6 +13,13 @@ end
 -- function to run when love updates the game state, runs before drawing
 M.update = function(dt)
     movement.handle_movement(dt)
+
+    local game_state = movement.game_state
+    if game_state.running then
+        return nil
+    else
+        return "game_over"
+    end
 end
 
 -- function to run when love draws the game screen
