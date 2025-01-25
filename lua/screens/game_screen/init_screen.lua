@@ -3,14 +3,11 @@ local objects = require("lua.screens.game_screen.components.objects")
 local graphics = require("lua.screens.game_screen.components.graphics")
 local background = require("lua.screens.game_screen.components.background")
 
-local bubble_y_offset = love.graphics.getHeight() / 3
-
 local M = {}
 
 -- runs once when opening the game screen
 M.load = function()
-    objects.bubble.center_x = love.graphics.getWidth() / 2
-    objects.bubble.center_y = love.graphics.getHeight() / 2 + bubble_y_offset
+	objects.setupGame()
 end
 
 -- function to run when love updates the game state, runs before drawing
