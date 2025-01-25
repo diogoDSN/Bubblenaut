@@ -22,11 +22,10 @@ M.update = function(dt)
 
     objects.update_bubble_animation(dt)
 
-    local game_state = movement.game_state
-    if game_state.running then
+    if objects.game_state == "" then
         return nil
     else
-        return "game_over"
+        return objects.game_state
     end
 end
 

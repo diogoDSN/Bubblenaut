@@ -104,6 +104,9 @@ M.setupGame = function()
 	    {800, -200},
 	    {400, -300}
     }
+
+    M.finish_line = -500
+    M.game_state = ""
 end
 
 

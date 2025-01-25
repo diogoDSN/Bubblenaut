@@ -4,6 +4,7 @@ M.screens = {
 	menu_screen = require("lua.screens.menu_screen.init_screen"),
 	game_screen = require("lua.screens.game_screen.init_screen"),
 	game_over_screen = require("lua.screens.game_over_screen.init_screen"),
+	win_screen = require("lua.screens.win_screen.init_screen")
 }
 
 M.current_screen = M.screens.menu_screen
