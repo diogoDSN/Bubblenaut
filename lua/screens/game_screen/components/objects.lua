@@ -1,4 +1,5 @@
 local configs = require("lua.screens.game_screen.config")
+local conf = require("conf")
 
 local M = {}
 
@@ -64,13 +65,13 @@ M.draw_bubble = function()
     )
 end
 
-local bubble_y_offset = love.graphics.getHeight() / 3
+local bubble_y_offset = conf.gameHeight / 3
 
 M.setupGame = function()
     M.bubble.sprite = love.graphics.newImage("archive/bubble.png")
 
-    M.bubble.center_x = love.graphics.getWidth() / 2
-    M.bubble.center_y = love.graphics.getHeight() / 2 + bubble_y_offset
+    M.bubble.center_x = conf.gameWidth / 2
+    M.bubble.center_y = conf.gameHeight / 2 + bubble_y_offset
     M.bubble.inner_radius = 50
     M.bubble.outer_radius = 52
     M.bubble.step = 50

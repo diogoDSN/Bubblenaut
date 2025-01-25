@@ -1,4 +1,5 @@
 local configs = require("lua.screens.game_screen.config")
+local conf = require("conf")
 
 local M = {}
 
@@ -44,9 +45,9 @@ M.circle_inside_screen = function(circle)
     local circle_max_y = circle.center_y + circle.radius
     local circle_min_y = circle.center_y - circle.radius
 
-    local max_x = love.graphics.getWidth()
+    local max_x = conf.gameWidth
     local min_x = 0
-    local max_y = love.graphics.getHeight()
+    local max_y = conf.gameHeight
     local min_y = 0
 
     if circle_max_x <= max_x and circle_min_x >= min_x and circle_max_y <= max_y and circle_min_y >= min_y then
