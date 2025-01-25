@@ -1,6 +1,7 @@
 local movement = require("lua.screens.game_screen.components.movement")
 local objects = require("lua.screens.game_screen.components.objects")
 local graphics = require("lua.screens.game_screen.components.graphics")
+local background = require("lua.screens.game_screen.components.background")
 
 local bubble_y_offset = love.graphics.getHeight() / 2
 
@@ -22,9 +23,12 @@ M.draw = function()
     local width = love.graphics.getWidth()
     local height = love.graphics.getHeight()
 
-
     love.graphics.setColor(1, 1, 1)
     love.graphics.print("A Bubble", width / 10, height / 10)
+
+    -- Background
+    local game_background_image = love.graphics.newImage("archive/game-background.png")
+    love.graphics.draw(game_background_image, background.background.center_x, background.background.center_y, 0, 1, 1, background.background.width / 2, background.background.height)
 
     -- Bubble
     love.graphics.setColor(1, 1, 1)

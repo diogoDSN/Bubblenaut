@@ -1,5 +1,6 @@
 local configs = require("lua.screens.game_screen.config")
 local objects = require("lua.screens.game_screen.components.objects")
+local background = require("lua.screens.game_screen.components.background")
 
 local M = {}
 
@@ -9,7 +10,7 @@ local right_movement_enabled = true
 local left_wall = 0
 local right_wall = 1024
 
-local scroll_speed = 50 -- pixels per second
+local scroll_speed = 100 -- pixels per second
 
 function love.keypressed(key)
     if key == configs.controls.move_left_key and left_movement_enabled and objects.bubble.center_x - objects.bubble.step > left_wall then
@@ -52,7 +53,8 @@ M.handle_movement = function(dt)
     end
 
     objects.spike.center_y = objects.spike.center_y + scroll_speed * dt
-    
+
+    background.background.center_y = background.background.center_y + scroll_speed * dt
 end
 
 return M
