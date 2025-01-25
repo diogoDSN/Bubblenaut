@@ -1,5 +1,7 @@
+local animations = require("lua.commons.animations")
 local configs = require("lua.screens.game_screen.config")
 local conf = require("conf")
+local sounds = require("lua.screens.game_over_screen.sounds")
 
 local M = {}
 
@@ -39,21 +41,18 @@ function M.bubble.move(self, position)
 end
 
 M.draw_bubble = function()
-    local bubble_sprite_width = M.bubble.sprite:getWidth()
     local bubble_sprite_height = M.bubble.sprite:getHeight()
-    -- Calculate center of the image
-    local center_x = bubble_sprite_width / 2
-    local center_y = bubble_sprite_height / 2
 
-    local scale_factor = (M.bubble.radius / bubble_sprite_width) * 2
+    local scale_factor = (M.bubble.radius / bubble_sprite_height) * 2
 
-    love.graphics.draw(
-        M.bubble.sprite,                      -- sprite
+    M.bubble_animation:draw(
         M.bubble.center_x, M.bubble.center_y, -- position
-        0,                                    -- rotation
-        scale_factor, scale_factor,           -- scaling
-        center_x, center_y                    -- pivot
+        scale_factor, scale_factor            -- scaling
     )
+end
+
+M.update_bubble_animation = function(dt)
+	M.bubble_animation:update(dt)
 end
 
 local spike_radius = 50
@@ -80,12 +79,27 @@ end
 local bubble_y_offset = conf.gameHeight / 3
 
 M.setupGame = function()
-    M.bubble.sprite = love.graphics.newImage("archive/bubble.png")
+    M.bubble.sprite = love.graphics.newImage("archive/bubble_sprites.png")
 
     M.bubble.center_x = conf.gameWidth / 2
     M.bubble.center_y = conf.gameHeight / 2 + bubble_y_offset
     M.bubble.radius = 52
     M.bubble.step = 50
+
+	local bubble_sprite_height = M.bubble.sprite:getHeight()
+	local center_x = bubble_sprite_height / 2
+    local center_y = bubble_sprite_height / 2
+
+	M.bubble_animation = animations.new_animation(
+    	M.bubble.sprite,                                      -- sprite
+		128, 128,                                             -- sprite size
+		M.bubble.center_x, M.bubble.center_y,                 -- position
+		center_x, center_y, 				                  -- pivot
+		0.5,                                                  -- duration
+		true,							                      -- started
+		true,                                                 -- repeatable
+		sounds.game_over                                      -- sound
+	)
 
     M.obstacles = {
         -- {x, y} coordinates relative to the whole level
