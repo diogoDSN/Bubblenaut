@@ -11,6 +11,8 @@ local M = {}
 
 -- runs once when opening the game screen
 M.load = function()
+    print("Game screen loaded")
+
     objects.setupGame()
     background.setup_background()
 end
@@ -23,9 +25,9 @@ M.update = function(dt)
 
     objects.update_bubble_animation(dt)
 
-	if colisions.applyColisions() then
-		objects.game_state = "game_over_screen"
-	end
+    if colisions.applyColisions() then
+        objects.game_state = "game_over_screen"
+    end
 
     if objects.game_state == "" then
         return nil
