@@ -63,12 +63,9 @@ local spike_pivot_y = spike_sprite:getHeight() / 2
 
 M.draw_obstacles = function()
     for _, spike in ipairs(M.obstacles) do
-        spike_center_x = spike[1]
-        spike_center_y = M.bubble.center_y - (spike[2] - M.y_position)
-
         love.graphics.draw(
             spike_sprite,                   -- sprite
-            spike_center_x, spike_center_y, -- position
+            spike[1], spike[2],             -- position
             0,                              -- rotation
             scale_factor, scale_factor,     -- scaling
             spike_pivot_x, spike_pivot_y    -- pivot
@@ -102,13 +99,11 @@ M.setupGame = function()
 	)
 
     M.obstacles = {
-        -- {x, y} coordinates relative to the whole level
-        { 200, 500 },
-        { 800, 1000 },
-        { 400, 1500 }
+       -- {x, y} coordinates relative to the whole level
+	    {200, -100},
+	    {800, -200},
+	    {400, -300}
     }
-
-    M.y_position = 0
 end
 
 
