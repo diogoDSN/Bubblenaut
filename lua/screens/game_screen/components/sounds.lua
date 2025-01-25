@@ -22,7 +22,9 @@ end
 
 
 M.update = function()
-    if love.keyboard.isDown(configs.controls.grow_key) then
+    local grow = love.keyboard.isDown(configs.controls.grow_key)
+    local shrink = love.keyboard.isDown(configs.controls.shrink_key)
+    if grow and not shrink then
         if not inflating:isPlaying() and objects.bubble.radius < configs.sizes.max_radius then
             inflating:seek(
                 inflating:getDuration("seconds") * inflation_percent(objects.bubble.radius),
@@ -36,8 +38,8 @@ M.update = function()
         end
     end
 
-    if love.keyboard.isDown(configs.controls.shrink_key) and objects.bubble.radius > configs.sizes.min_radius then
-        if not deflating:isPlaying() then
+    if shrink and not grow then
+        if not deflating:isPlaying() and objects.bubble.radius > configs.sizes.min_radius then
             deflating:seek(
                 deflating:getDuration("seconds") * inflation_percent(objects.bubble.radius),
                 "seconds"
