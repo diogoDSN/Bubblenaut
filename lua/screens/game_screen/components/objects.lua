@@ -71,7 +71,7 @@ local bubble_y_offset = conf.gameHeight / 5
 
 M.setupGame = function()
     M.bubble.sprite = love.graphics.newImage("archive/bubble_sprites.png")
-	M.spike_radius = 50
+	M.spike_radius = conf.gameWidth / 14
 	M.spike_sprite = love.graphics.newImage("archive/spike.png")
 	M.spike_scale_factor = 2 * M.spike_radius / M.spike_sprite:getWidth()
 	M.spike_pivot_x = M.spike_sprite:getWidth() / 2
@@ -100,14 +100,13 @@ M.setupGame = function()
 
     M.obstacles = {
        -- {x, y} coordinates relative to the whole level
-	    {200, -100},
-	    {800, -200},
-	    {400, -300}
+       {1 * M.spike_radius, -M.spike_radius},
+       {13 * M.spike_radius, -5 * M.spike_radius},
+       {7 * M.spike_radius, -10 * M.spike_radius}
     }
-
-    M.finish_line = -500
+       
+    M.finish_line = -20 * M.spike_radius
     M.game_state = ""
 end
-
 
 return M
