@@ -23,6 +23,8 @@ local pop_animation = animations.new_animation(
     200,
     200,
     0.2,
+    1,
+    1,
     false,
     false,
     sounds.pop_cut

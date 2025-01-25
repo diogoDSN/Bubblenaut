@@ -20,6 +20,8 @@ M.update = function(dt)
     background.update_background()
     sounds.update()
 
+    objects.update_bubble_animation(dt)
+
     local game_state = movement.game_state
     if game_state.running then
         return nil
