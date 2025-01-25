@@ -15,6 +15,7 @@ M.bubble_movement = {
 }
 
 local scroll_speed = 100 -- pixels per second
+local scroll_ratio = 1.5 -- scroll distance per second compared to bubble size
 
 local debug_prints = false
 
@@ -132,7 +133,8 @@ M.handle_movement = function(dt)
         configs.steps.max_step
     )
 
-    objects.spike.center_y = objects.spike.center_y + scroll_speed * dt
+    scroll_speed = objects.bubble.inner_radius * scroll_ratio
+    objects.y_position = objects.y_position + scroll_speed * dt
 end
 
 return M
