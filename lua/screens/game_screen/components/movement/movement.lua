@@ -72,7 +72,6 @@ M.handle_movement = function(dt)
         local new_bubble_boundary_circle = utils.expanded_bubble_boundary_circle(objects.bubble)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:grow()
-            -- we should add the ratio as a config
             background.set_speed(background.get_speed() * 1.05)
         end
     end
