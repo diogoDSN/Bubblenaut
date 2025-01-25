@@ -55,20 +55,15 @@ M.update_bubble_animation = function(dt)
 	M.bubble_animation:update(dt)
 end
 
-local spike_radius = 50
-local spike_sprite = love.graphics.newImage("archive/spike.png")
-local spike_scale_factor = 2 * spike_radius / spike_sprite:getWidth()
-local spike_pivot_x = spike_sprite:getWidth() / 2
-local spike_pivot_y = spike_sprite:getHeight() / 2
-
+M.spike_radius = 50
 M.draw_obstacles = function()
     for _, spike in ipairs(M.obstacles) do
         love.graphics.draw(
-            spike_sprite,                   -- sprite
-            spike[1], spike[2],             -- position
-            0,                              -- rotation
-            scale_factor, scale_factor,     -- scaling
-            spike_pivot_x, spike_pivot_y    -- pivot
+            M.spike_sprite,                             -- sprite
+            spike[1], spike[2],                         -- position
+            0,                              			-- rotation
+            M.spike_scale_factor, M.spike_scale_factor, -- scaling
+            M.spike_pivot_x, M.spike_pivot_y    		-- pivot
         )
     end
 end
@@ -77,6 +72,11 @@ local bubble_y_offset = conf.gameHeight / 5
 
 M.setupGame = function()
     M.bubble.sprite = love.graphics.newImage("archive/bubble_sprites.png")
+	M.spike_sprite = love.graphics.newImage("archive/spike.png")
+	M.spike_scale_factor = 2 * M.spike_radius / M.spike_sprite:getWidth()
+	M.spike_pivot_x = M.spike_sprite:getWidth() / 2
+	M.spike_pivot_y = M.spike_sprite:getHeight() / 2
+
 
     M.bubble.center_x = conf.gameWidth / 2
     M.bubble.center_y = conf.gameHeight / 2 + bubble_y_offset
