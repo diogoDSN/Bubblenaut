@@ -53,6 +53,10 @@ M.update = function(dt)
         pop_animation:start()
     end
 
+    if love.keyboard.isDown("m") then
+        beamer:activate("menu_screen")
+    end
+
     if love.keyboard.isDown("escape") or love.keyboard.isDown("q") then
         love.event.quit()
     end
