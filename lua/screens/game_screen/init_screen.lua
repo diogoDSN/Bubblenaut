@@ -41,10 +41,7 @@ M.update = function(dt)
         M.beamer:activate(objects.game_state)
     end
 
-    local next_screen = M.beamer:update(dt)
-    if next_screen ~= nil then
-        return next_screen
-    end
+    return M.beamer:update(dt)
 end
 
 -- function to run when love draws the game screen
