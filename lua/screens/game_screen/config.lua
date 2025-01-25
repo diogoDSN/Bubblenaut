@@ -13,6 +13,7 @@ M.steps = {
     step_reduction_factor = 0.98,
     max_step = 200,
     min_step = 10,
+    animation_step = 10,
 }
 
 M.sizes = {
