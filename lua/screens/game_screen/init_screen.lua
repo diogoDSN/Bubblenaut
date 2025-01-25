@@ -13,9 +13,6 @@ end
 -- function to run when love updates the game state, runs before drawing
 M.update = function(dt)
     movement.handle_movement(dt)
-	if love.keyboard.isDown('o') then
-		return "menu_screen"
-	end
 end
 
 -- function to run when love draws the game screen
