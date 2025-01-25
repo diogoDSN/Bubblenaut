@@ -27,8 +27,8 @@ M.draw = function()
     love.graphics.print("A Bubble", width / 10, height / 10)
 
     -- Background
-    local game_background_image = love.graphics.newImage("archive/game-background.png")
-    love.graphics.draw(game_background_image, background.background.center_x, background.background.center_y, 0, 1, 1, background.background.width / 2, background.background.height)
+    --local game_background_image = love.graphics.newImage("archive/game-background.png")
+    --love.graphics.draw(game_background_image, background.background.center_x, background.background.center_y, 0, 1, 1, background.background.width / 2, background.background.height)
 
     -- Bubble
     love.graphics.setColor(1, 1, 1)
