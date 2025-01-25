@@ -1,12 +1,11 @@
 local configs = require("lua.screens.game_screen.config")
 local objects = require("lua.screens.game_screen.components.objects")
 local sounds = require("lua.screens.game_screen.components.sounds")
-local background = require("lua.screens.game_screen.components.background")
 local graphics = require("lua.screens.game_screen.components.graphics")
+local utils = require("lua.screens.game_screen.components.movement.utils")
 
 local M = {}
 
--- please have only one state with a true value
 M.game_state = {
     running = true,
 }
@@ -179,8 +178,6 @@ M.handle_movement = function(dt)
     )
 
     objects.spike.center_y = objects.spike.center_y + scroll_speed * dt
-
-    --background.background.center_y = background.background.center_y + scroll_speed * dt
 end
 
 return M

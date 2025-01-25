@@ -1,3 +1,5 @@
+local configs = require("lua.screens.game_screen.config")
+
 local M = {}
 
 M.bubble = {
@@ -48,5 +50,32 @@ M.setupGame = function()
 		line_color = {1, 0, 0},
 	}
 end
+
+
+function M.bubble.get_outer_line_width(self)
+    return 2 * (self.outer_radius - self.inner_radius)
+end
+
+function M.bubble.grow(self)
+    local expansion_factor = configs.sizes.expansion_factor
+    local shrink_factor = configs.sizes.shrink_factor
+
+    local new_inner_radius = self.inner_radius * expansion_factor
+    local new_outer_radius = objects.bubble.outer_radius * expansion_factor
+    self.inner_radius = new_inner_radius
+    objects.bubble.outer_radius = new_outer_radius
+
+    objects.bubble.step = objects.bubble.step * step_increase_factor
+end
+
+M.spike = {
+    center_x = 800,
+    center_y = 200,
+    inner_radius = 50,
+    outer_radius = 52,
+    step = 50,
+    fill_color = { 1, 0, 0, 0.5 },
+    line_color = { 1, 0, 0 },
+}
 
 return M
