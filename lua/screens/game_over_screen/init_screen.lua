@@ -1,5 +1,6 @@
 local sounds = require("lua.screens.game_over_screen.sounds")
 local animations = require("lua.commons.animations")
+local router = require("lua.commons.router")
 
 local M = {}
 
@@ -9,11 +10,10 @@ local game_over_sound = {
     track = math.random() < 0.5 and sounds.game_over or sounds.game_over_deep,
 }
 
-local beamer = {
-    duration = 0.2,
-    activated = false,
-    destination = "game_screen"
-}
+local beamer = router.new_beamer(
+    "game_screen",
+    0.2
+)
 
 local pop_animation = animations.new_animation(
     love.graphics.newImage("archive/bubble_pop.png"),
@@ -45,17 +45,13 @@ end
 
 M.update = function(dt)
     if love.keyboard.isDown("space") then
-        beamer.destination = "game_screen"
-        beamer.activated = true
+        beamer:activate()
         pop_animation:start()
     end
 
-    if beamer.activated then
-        beamer.duration = beamer.duration - dt
-    end
-
-    if beamer.duration <= 0 then
-        return beamer.destination
+    local next_screen = beamer:update(dt)
+    if next_screen ~= nil then
+        return next_screen
     end
 
     game_over_sound.countdown = game_over_sound.countdown - dt
