@@ -28,11 +28,7 @@ M.draw = function()
     --love.graphics.draw(game_background_image, background.background.center_x, background.background.center_y, 0, 1, 1, background.background.width / 2, background.background.height)
 
     -- Bubble
-    love.graphics.setColor(1, 1, 1)
-    love.graphics.setLineWidth(graphics.bubble_outer_line_width(objects.bubble))
-    love.graphics.circle("line", objects.bubble.center_x, objects.bubble.center_y, objects.bubble.outer_radius)
-    love.graphics.setColor(0.2, 0.2, 1, 0.5)
-    love.graphics.circle("fill", objects.bubble.center_x, objects.bubble.center_y, objects.bubble.inner_radius)
+    objects.draw_bubble()
 
     -- Spike
     love.graphics.setColor(graphics.spike_line_color(objects.spike))
