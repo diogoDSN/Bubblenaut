@@ -1,5 +1,6 @@
 require "lua.draw"
 require "lua.update"
+require "lua.inputs"
 local state = require "lua.state"
 local push = require "push"
 local conf = require "conf"

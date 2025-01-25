@@ -15,54 +15,55 @@ M.bubble_movement = {
 }
 
 local scroll_speed = 100 -- pixels per second
+local scroll_ratio = 1.5 -- scroll distance per second compared to bubble size
 
-function love.keypressed(key)
-    if key == configs.controls.move_left_key then
-        if not M.bubble_movement.sideways_movement_locked then
-            local animation_step = configs.steps.animation_step
-            local starting_position = objects.bubble.center_x
-            local final_position = objects.bubble.center_x - objects.bubble.step
-            for i = 1, animation_step do
-                local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
-                local can_move_left = utils.bubble_can_move(objects.bubble, { x = new_x, y = objects.bubble.center_y })
+M.on_move_left_key_press = function()
+    if not M.bubble_movement.sideways_movement_locked then
+        local animation_step = configs.steps.animation_step
+        local starting_position = objects.bubble.center_x
+        local final_position = objects.bubble.center_x - objects.bubble.step
+        for i = 1, animation_step do
+            local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
+            local can_move_left = utils.bubble_can_move(objects.bubble, { x = new_x, y = objects.bubble.center_y })
 
-                if can_move_left then
-                    table.insert(M.bubble_movement.positions, {
-                        x = starting_position + (i / animation_step) * (final_position - starting_position),
-                        y = objects.bubble.center_y,
-                    })
-                end
-            end
-
-            if #M.bubble_movement.positions > 0 then
-                M.bubble_movement.sideways_movement_locked = true
+            if can_move_left then
+                table.insert(M.bubble_movement.positions, {
+                    x = starting_position + (i / animation_step) * (final_position - starting_position),
+                    y = objects.bubble.center_y,
+                })
             end
         end
-    end
 
-    if key == configs.controls.move_right_key then
-        if not M.bubble_movement.sideways_movement_locked then
-            local animation_step = configs.steps.animation_step
-            local starting_position = objects.bubble.center_x
-            local final_position = objects.bubble.center_x + objects.bubble.step
-            for i = 1, animation_step do
-                local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
-                local can_move = utils.bubble_can_move(objects.bubble, { x = new_x, y = objects.bubble.center_y })
-
-                if can_move then
-                    table.insert(M.bubble_movement.positions, {
-                        x = new_x,
-                        y = objects.bubble.center_y,
-                    })
-                end
-            end
-
-            if #M.bubble_movement.positions > 0 then
-                M.bubble_movement.sideways_movement_locked = true
-            end
+        if #M.bubble_movement.positions > 0 then
+            M.bubble_movement.sideways_movement_locked = true
         end
     end
 end
+
+M.on_move_right_key_press = function()
+    if not M.bubble_movement.sideways_movement_locked then
+        local animation_step = configs.steps.animation_step
+        local starting_position = objects.bubble.center_x
+        local final_position = objects.bubble.center_x + objects.bubble.step
+        for i = 1, animation_step do
+            local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
+            local can_move = utils.bubble_can_move(objects.bubble, { x = new_x, y = objects.bubble.center_y })
+
+            if can_move then
+                table.insert(M.bubble_movement.positions, {
+                    x = new_x,
+                    y = objects.bubble.center_y,
+                })
+            end
+        end
+
+        if #M.bubble_movement.positions > 0 then
+            M.bubble_movement.sideways_movement_locked = true
+        end
+    end
+end
+
+
 
 M.handle_movement = function(dt)
     if #M.bubble_movement.positions > 0 then
@@ -125,7 +126,8 @@ M.handle_movement = function(dt)
         configs.steps.max_step
     )
 
-    objects.spike.center_y = objects.spike.center_y + scroll_speed * dt
+    scroll_speed = objects.bubble.inner_radius * scroll_ratio
+    objects.y_position = objects.y_position + scroll_speed * dt
 end
 
 return M

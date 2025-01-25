@@ -65,6 +65,27 @@ M.draw_bubble = function()
     )
 end
 
+local spike_radius = 50
+local spike_sprite = love.graphics.newImage("archive/spike.png")
+local spike_scale_factor = 2 * spike_radius / spike_sprite:getWidth()
+local spike_pivot_x = spike_sprite:getWidth() / 2
+local spike_pivot_y = spike_sprite:getHeight() / 2
+
+M.draw_obstacles = function()
+    for _, spike in ipairs(M.obstacles) do
+        spike_center_x = spike[1]
+        spike_center_y = M.bubble.center_y - (spike[2] - M.y_position) 
+
+        love.graphics.draw(
+            spike_sprite,                   -- sprite
+            spike_center_x, spike_center_y, -- position
+            0,                              -- rotation
+            scale_factor, scale_factor,     -- scaling
+            spike_pivot_x, spike_pivot_y    -- pivot
+        )
+    end
+end
+
 local bubble_y_offset = conf.gameHeight / 3
 
 M.setupGame = function()
@@ -76,27 +97,15 @@ M.setupGame = function()
     M.bubble.outer_radius = 52
     M.bubble.step = 50
 
-    M.spike = {
-        center_x = 800,
-        center_y = 200,
-        inner_radius = 50,
-        outer_radius = 52,
-        step = 50,
-        fill_color = { 1, 0, 0, 0.5 },
-        line_color = { 1, 0, 0 },
+    M.obstacles = {
+        -- {x, y} coordinates relative to the whole level
+	    {200, 500},
+	    {800, 1000},
+	    {400, 1500}
     }
+
+    M.y_position = 0
 end
 
-
-
-M.spike = {
-    center_x = 800,
-    center_y = 200,
-    inner_radius = 50,
-    outer_radius = 52,
-    step = 50,
-    fill_color = { 1, 0, 0, 0.5 },
-    line_color = { 1, 0, 0 },
-}
 
 return M
