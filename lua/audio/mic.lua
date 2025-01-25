@@ -1,3 +1,5 @@
+AMPLITUDE_MOD = 1
+
 function Initialize_audio_input()
   local devices = love.audio.getRecordingDevices()
   local microphone = devices[1]
@@ -52,7 +54,7 @@ function CalculateAmplitude(data)
 
   -- Calculate average amplitude
   if count > 6 then
-    avgAmplitude = 1 + 5.5 * sum / count
+    avgAmplitude = 1 + AMPLITUDE_MOD * sum / count
   end
 
   return avgAmplitude

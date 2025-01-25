@@ -3,7 +3,8 @@ local objects = require("lua.screens.game_screen.components.objects")
 local colisions = require("lua.screens.game_screen.components.colisions")
 local graphics = require("lua.screens.game_screen.components.graphics")
 local background = require("lua.screens.game_screen.components.background")
-local mic = require("lua.audio.mic")
+local utils = require("lua.screens.game_screen.components.movement.utils")
+require("lua.audio.mic")
 local sounds = require("lua.screens.game_screen.components.sounds")
 local conf = require "conf"
 local configs = require("lua.screens.game_screen.config")
@@ -13,8 +14,9 @@ local M = {}
 -- runs once when opening the game screen
 M.load = function()
     objects.setupGame()
-    Init_time = love.timer.getTime()
-    Mic, LastSecondData = mic.Initialize_audio_input()
+    GrowWatchdog = love.timer.getTime()
+    ShrinkWatchdog = love.timer.getTime()
+    Mic, LastSecondData = Initialize_audio_input()
     print("Game screen loaded")
 
     background.setup_background()
@@ -23,13 +25,20 @@ end
 -- function to run when love updates the game state, runs before drawing
 M.update = function(dt)
     movement.handle_movement(dt)
-    -- Processes audio every second and resets timer
-    if math.floor(math.fmod(love.timer.getTime() - Init_time, 10)) == 1 then
-        objects.bubble.shrink(objects.bubble)
-        local amp = mic.Process_audio(Mic, LastSecondData)
-        Init_time = love.timer.getTime()
-        objects.bubble.growExpFactor(objects.bubble, amp)
+    if love.timer.getTime() - GrowWatchdog > 2 * dt then
+        local amp = Process_audio(Mic, LastSecondData)
+        local new_bubble_boundary_circle = utils.expanded_bubble_boundary_circle(objects.bubble)
+        if utils.circle_inside_screen(new_bubble_boundary_circle) then
+            objects.bubble.growExpFactor(objects.bubble, amp)
+        end
+        GrowWatchdog = love.timer.getTime()
     end
+
+    if love.timer.getTime() - ShrinkWatchdog > 4 * dt then
+        objects.bubble.shrink(objects.bubble)
+        ShrinkWatchdog = love.timer.getTime()
+    end
+
     background.update_background()
     sounds.update()
 
