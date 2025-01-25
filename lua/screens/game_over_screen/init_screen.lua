@@ -53,6 +53,10 @@ M.update = function(dt)
         pop_animation:start()
     end
 
+    if love.keyboard.isDown("escape") or love.keyboard.isDown("q") then
+        love.event.quit()
+    end
+
     local next_screen = beamer:update(dt)
     if next_screen ~= nil then
         return next_screen
