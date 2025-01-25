@@ -34,4 +34,12 @@ M.draw_backgroud = function ()
 	)
 end
 
+M.set_speed = function (new_speed)
+	SCROLL_SPEED = new_speed
+end
+
+M.get_speed = function ()
+	return SCROLL_SPEED
+end
+
 return M
