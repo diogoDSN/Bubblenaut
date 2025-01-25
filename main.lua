@@ -5,7 +5,7 @@ local push = require "push"
 local conf = require "conf"
 
 local windowWidth, windowHeight = love.window.getDesktopDimensions()
-windowWidth, windowHeight = windowHeight*.9, windowHeight*.9 --make the window a bit smaller than the screen itself
+windowWidth, windowHeight = windowHeight*.7, windowHeight*.7*5/4 --make the window a bit smaller than the screen itself
 
 push:setupScreen(conf.gameWidth, conf.gameHeight, windowWidth, windowHeight, {fullscreen = false})
 

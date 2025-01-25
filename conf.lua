@@ -3,8 +3,8 @@ function love.conf(t)
 end
 
 local conf = {
-    gameWidth = 540,
-    gameHeight = 540
+    gameWidth = 512,
+    gameHeight = 640
     --fixed game resolution
 }
 
