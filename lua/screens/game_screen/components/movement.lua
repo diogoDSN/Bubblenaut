@@ -119,7 +119,7 @@ M.handle_movement = function(dt)
     else
         if sounds.inflating:isPlaying() then
             love.audio.pause(sounds.inflating)
-            sounds.inflating.seek(sounds.inflating, 0, "seconds")
+            sounds.inflating:seek(0, "seconds")
         end
     end
 
@@ -151,7 +151,7 @@ M.handle_movement = function(dt)
     else
         if sounds.deflating:isPlaying() then
             love.audio.pause(sounds.deflating)
-            sounds.inflating.seek(sounds.deflating, 0, "seconds")
+            sounds.inflating:seek(0, "seconds")
         end
     end
 
