@@ -108,16 +108,10 @@ M.handle_movement = function(dt)
         end
     end
 
-    objects.bubble.inner_radius = utils.clamp(
-        objects.bubble.inner_radius,
-        configs.sizes.min_inner_radius,
-        configs.sizes.max_inner_radius
-    )
-
-    objects.bubble.outer_radius = utils.clamp(
-        objects.bubble.outer_radius,
-        configs.sizes.min_outer_radius,
-        configs.sizes.max_outer_radius
+    objects.bubble.radius = utils.clamp(
+        objects.bubble.radius,
+        configs.sizes.min_radius,
+        configs.sizes.max_radius
     )
 
     objects.bubble.step = utils.clamp(
@@ -126,7 +120,7 @@ M.handle_movement = function(dt)
         configs.steps.max_step
     )
 
-    scroll_speed = objects.bubble.inner_radius * scroll_ratio
+    scroll_speed = objects.bubble.radius * scroll_ratio
     objects.y_position = objects.y_position + scroll_speed * dt
 end
 
