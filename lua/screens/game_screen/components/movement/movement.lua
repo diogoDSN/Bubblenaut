@@ -1,24 +1,17 @@
 local configs = require("lua.screens.game_screen.config")
 local objects = require("lua.screens.game_screen.components.objects")
-local sounds = require("lua.screens.game_screen.components.sounds")
 local utils = require("lua.screens.game_screen.components.movement.utils")
+local background = require("lua.screens.game_screen.components.background")
 
 local M = {}
-
-M.game_state = {
-    running = true,
-}
 
 M.bubble_movement = {
     sideways_movement_locked = false,
     positions = {},
 }
 
-local scroll_speed = 100 -- pixels per second
-local scroll_ratio = 1.5 -- scroll distance per second compared to bubble size
-
 M.on_move_left_key_press = function()
-    if not M.bubble_movement.sideways_movement_locked then
+    if not objects.bubble.sideways_movement_locked then
         local animation_step = configs.steps.animation_step
         local starting_position = objects.bubble.center_x
         local final_position = objects.bubble.center_x - objects.bubble.step
@@ -35,13 +28,13 @@ M.on_move_left_key_press = function()
         end
 
         if #M.bubble_movement.positions > 0 then
-            M.bubble_movement.sideways_movement_locked = true
+            objects.bubble.sideways_movement_locked = true
         end
     end
 end
 
 M.on_move_right_key_press = function()
-    if not M.bubble_movement.sideways_movement_locked then
+    if not objects.bubble.sideways_movement_locked then
         local animation_step = configs.steps.animation_step
         local starting_position = objects.bubble.center_x
         local final_position = objects.bubble.center_x + objects.bubble.step
@@ -58,11 +51,10 @@ M.on_move_right_key_press = function()
         end
 
         if #M.bubble_movement.positions > 0 then
-            M.bubble_movement.sideways_movement_locked = true
+            objects.bubble.sideways_movement_locked = true
         end
     end
 end
-
 
 
 M.handle_movement = function(dt)
@@ -73,22 +65,13 @@ M.handle_movement = function(dt)
     end
 
     if #M.bubble_movement.positions == 0 then
-        M.bubble_movement.sideways_movement_locked = false
+        objects.bubble.sideways_movement_locked = false
     end
 
     if love.keyboard.isDown(configs.controls.grow_key) then
         local new_bubble_boundary_circle = utils.expanded_bubble_boundary_circle(objects.bubble)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:grow()
-        end
-
-        if not sounds.inflating:isPlaying() then
-            love.audio.play(sounds.inflating)
-        end
-    else
-        if sounds.inflating:isPlaying() then
-            love.audio.pause(sounds.inflating)
-            sounds.inflating:seek(0, "seconds")
         end
     end
 
@@ -97,31 +80,19 @@ M.handle_movement = function(dt)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:shrink()
         end
-
-        if not sounds.deflating:isPlaying() then
-            love.audio.play(sounds.deflating)
-        end
-    else
-        if sounds.deflating:isPlaying() then
-            love.audio.pause(sounds.deflating)
-            sounds.inflating:seek(0, "seconds")
-        end
     end
 
-    objects.bubble.radius = utils.clamp(
-        objects.bubble.radius,
-        configs.sizes.min_radius,
-        configs.sizes.max_radius
-    )
+    local scroll_speed = objects.bubble.radius * configs.steps.scroll_ratio
+    background.set_speed(objects.bubble.radius * 0.2)
 
-    objects.bubble.step = utils.clamp(
-        objects.bubble.step,
-        configs.steps.min_step,
-        configs.steps.max_step
-    )
+    for _, spike in ipairs(objects.obstacles) do
+        spike[2] = spike[2] + scroll_speed * dt
+    end
 
-    scroll_speed = objects.bubble.radius * scroll_ratio
-    objects.y_position = objects.y_position + scroll_speed * dt
+    objects.finish_line = objects.finish_line + scroll_speed * dt
+    if (objects.finish_line >= objects.bubble.center_y) then
+        objects.game_state = "win_screen"
+    end
 end
 
 return M

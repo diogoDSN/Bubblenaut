@@ -4,15 +4,16 @@ local conf = require "conf"
 local M = {}
 local buttons = {}
 
-local beamer = router.new_beamer(
-    "game_screen",
-    0.2
-)
+local beamer
 
 M.load = function()
-    if conf.debug then
-        print("Menu screen loaded")
-    end
+    print("Menu screen loaded")
+
+    beamer = router.new_beamer(
+        "game_screen",
+        0.2
+    )
+    
     M.background = love.graphics.newImage("archive/menu-background.png")
 end
 
@@ -62,6 +63,7 @@ M.update = function(dt)
         y = y * conf.gameHeight / love.graphics.getHeight()
         print(x, y)
     end
+    
     if love.keyboard.isDown("space") then
         beamer:activate()
     end

@@ -1,7 +1,7 @@
 local animations = require("lua.commons.animations")
 local configs = require("lua.screens.game_screen.config")
+local utils = require("lua.screens.game_screen.components.movement.utils")
 local conf = require("conf")
-local sounds = require("lua.screens.game_over_screen.sounds")
 
 local M = {}
 
@@ -10,6 +10,7 @@ M.bubble = {
     center_y = 0,
     radius = 0,
     step = 0,
+    sideways_movement_locked = false,
 }
 
 function M.bubble.growExpFactor(self, expansion_factor)
@@ -28,9 +29,17 @@ function M.bubble.grow(self)
 
     local new_radius = self.radius * expansion_factor
 
-    self.radius = new_radius
+    self.radius = utils.clamp(
+        new_radius,
+        configs.sizes.min_radius,
+        configs.sizes.max_radius
+    )
 
-    self.step = self.step * step_increase_factor
+    self.step = utils.clamp(
+        self.step * step_increase_factor,
+        configs.steps.min_step,
+        configs.steps.max_step
+    )
 end
 
 function M.bubble.shrink(self)
@@ -39,9 +48,17 @@ function M.bubble.shrink(self)
 
     local new_radius = self.radius * shrink_factor
 
-    self.radius = new_radius
+    self.radius = utils.clamp(
+        new_radius,
+        configs.sizes.min_radius,
+        configs.sizes.max_radius
+    )
 
-    self.step = self.step * step_reduction_factor
+    self.step = utils.clamp(
+        self.step * step_reduction_factor,
+        configs.steps.min_step,
+        configs.steps.max_step
+    )
 end
 
 function M.bubble.move(self, position)
@@ -65,31 +82,38 @@ M.update_bubble_animation = function(dt)
     M.bubble_animation:update(dt)
 end
 
-local spike_radius = 50
-local spike_sprite = love.graphics.newImage("archive/spike.png")
-local spike_scale_factor = 2 * spike_radius / spike_sprite:getWidth()
-local spike_pivot_x = spike_sprite:getWidth() / 2
-local spike_pivot_y = spike_sprite:getHeight() / 2
-
 M.draw_obstacles = function()
     for _, spike in ipairs(M.obstacles) do
-        spike_center_x = spike[1]
-        spike_center_y = M.bubble.center_y - (spike[2] - M.y_position)
-
         love.graphics.draw(
-            spike_sprite,                   -- sprite
-            spike_center_x, spike_center_y, -- position
-            0,                              -- rotation
-            scale_factor, scale_factor,     -- scaling
-            spike_pivot_x, spike_pivot_y    -- pivot
+            M.spike_sprite,                             -- sprite
+            spike[1], spike[2],                         -- position
+            0,                                          -- rotation
+            M.spike_scale_factor, M.spike_scale_factor, -- scaling
+            M.spike_pivot_x, M.spike_pivot_y            -- pivot
         )
     end
 end
 
-local bubble_y_offset = conf.gameHeight / 3
+M.draw_finish_line = function()
+    love.graphics.draw(
+        M.finish_line_sprite,
+        0, M.finish_line
+    )
+end
+
+local bubble_y_offset = conf.gameHeight / 5
 
 M.setupGame = function()
     M.bubble.sprite = love.graphics.newImage("archive/bubble_sprites.png")
+    M.spike_sprite = love.graphics.newImage("archive/spike.png")
+
+    M.spike_radius = conf.gameWidth / 14
+    M.spike_scale_factor = 2 * M.spike_radius / M.spike_sprite:getWidth()
+    M.spike_pivot_x = M.spike_sprite:getWidth() / 2
+    M.spike_pivot_y = M.spike_sprite:getHeight() / 2
+
+    M.finish_line_sprite = love.graphics.newImage("archive/fence.png")
+
 
     M.bubble.center_x = conf.gameWidth / 2
     M.bubble.center_y = conf.gameHeight / 2 + bubble_y_offset
@@ -108,18 +132,18 @@ M.setupGame = function()
         0.5,                                  -- duration
         true,                                 -- started
         true,                                 -- repeatable
-        sounds.game_over                      -- sound
+        nil                                   -- sound
     )
 
     M.obstacles = {
         -- {x, y} coordinates relative to the whole level
-        { 200, 500 },
-        { 800, 1000 },
-        { 400, 1500 }
+        { 1 * M.spike_radius,  -M.spike_radius },
+        { 13 * M.spike_radius, -5 * M.spike_radius },
+        { 7 * M.spike_radius,  -10 * M.spike_radius }
     }
 
-    M.y_position = 0
+    M.finish_line = -20 * M.spike_radius
+    M.game_state = ""
 end
-
 
 return M

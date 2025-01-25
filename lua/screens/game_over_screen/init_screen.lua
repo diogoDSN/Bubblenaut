@@ -5,33 +5,37 @@ local conf = require("conf")
 
 local M = {}
 
-local game_over_sound = {
-    countdown = 0.2,
-    played = false,
-    track = math.random() < 0.5 and sounds.game_over or sounds.game_over_deep,
-}
-
-local beamer = router.new_beamer(
-    "game_screen",
-    0.2
-)
-
-local pop_animation = animations.new_animation(
-    love.graphics.newImage("archive/bubble_pop.png"),
-    128,
-    128,
-    200,
-    200,
-    0.2,
-    1,
-    1,
-    false,
-    false,
-    sounds.pop_cut
-)
+local game_over_sound
+local beamer
+local pop_animation
 
 M.load = function()
-    print("Menu screen loaded")
+    print("Game over screen loaded")
+
+    beamer = router.new_beamer(
+        "game_screen",
+        0.2
+    )
+
+    game_over_sound = {
+        countdown = 0.2,
+        played = false,
+        track = math.random() < 0.5 and sounds.game_over or sounds.game_over_deep,
+    }
+
+    pop_animation = animations.new_animation(
+        love.graphics.newImage("archive/bubble_pop.png"),
+        128,
+        128,
+        200,
+        200,
+        0.2,
+        1,
+        1,
+        false,
+        false,
+        sounds.pop_cut
+    )
 end
 
 

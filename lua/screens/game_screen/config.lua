@@ -9,19 +9,21 @@ M.controls = {
 
 M.steps = {
     bubble_step = 50,
-    step_increase_factor = 1.1,
-    step_reduction_factor = 0.9,
+    step_increase_factor = 1.05,
+    step_reduction_factor = 0.95,
     max_step = 200,
     min_step = 10,
     animation_step = 10,
+    scroll_ratio = 1.5, -- scroll distance per second compared to bubble size
 }
 
 M.sizes = {
     initial_radius = 52,
-    expansion_factor = 1.1,
-    shrink_factor = 0.9,
-    max_radius = 208,
-    min_radius = 10.4,
+    expansion_factor = 1.05,
+    max_radius = 100,
+    min_radius = 10,
 }
+
+M.sizes.shrink_factor = 1 / M.sizes.expansion_factor
 
 return M
