@@ -10,7 +10,7 @@ local beamer
 local pop_animation
 
 M.load = function()
-    print("Menu screen loaded")
+    print("Game over screen loaded")
 
     beamer = router.new_beamer(
         "game_screen",

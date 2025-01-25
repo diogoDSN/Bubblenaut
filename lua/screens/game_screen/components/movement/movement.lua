@@ -72,7 +72,6 @@ M.handle_movement = function(dt)
         local new_bubble_boundary_circle = utils.expanded_bubble_boundary_circle(objects.bubble)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:grow()
-            background.set_speed(background.get_speed() * 1.05)
         end
     end
 
@@ -80,23 +79,11 @@ M.handle_movement = function(dt)
         local new_bubble_boundary_circle = utils.shrunken_bubble_boundary_circle(objects.bubble)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:shrink()
-            background.set_speed(background.get_speed() / 1.05)
         end
     end
 
-    objects.bubble.radius = utils.clamp(
-        objects.bubble.radius,
-        configs.sizes.min_radius,
-        configs.sizes.max_radius
-    )
-
-    objects.bubble.step = utils.clamp(
-        objects.bubble.step,
-        configs.steps.min_step,
-        configs.steps.max_step
-    )
-
     local scroll_speed = objects.bubble.radius * configs.steps.scroll_ratio
+    background.set_speed(objects.bubble.radius * 0.2)
 
     for _, spike in ipairs(objects.obstacles) do
         spike[2] = spike[2] + scroll_speed * dt
