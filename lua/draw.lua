@@ -1,5 +1,5 @@
 local state = require("lua.state")
 
 function love.draw()
-    state.screen.draw()
+    state.current_screen.draw()
 end

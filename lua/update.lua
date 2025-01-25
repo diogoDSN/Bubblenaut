@@ -1,9 +1,9 @@
 local state = require("lua.state")
 
 function love.update(dt)
-    local newScreen = state.screen.update(dt)
-    if newScreen ~= nil then
-        state.screen = newScreen
-        state.screen.load()
+    local new_screen = state.current_screen.update(dt)
+    if new_screen ~= nil then
+		state.setScreen(new_screen)
+        state.current_screen.load()
     end
 end

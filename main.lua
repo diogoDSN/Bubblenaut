@@ -4,5 +4,5 @@ local state = require "lua.state"
 
 function love.load()
     love.window.setMode(1024, 1024)
-    state.screen.load()
+    state.current_screen.load()
 end
