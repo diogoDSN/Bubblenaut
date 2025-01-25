@@ -8,12 +8,14 @@ local M = {}
 
 -- runs once when opening the game screen
 M.load = function()
-    objects.setupGame()
+	objects.setupGame()
+	background.setup_background()
 end
 
 -- function to run when love updates the game state, runs before drawing
 M.update = function(dt)
     movement.handle_movement(dt)
+	background.update_background()
 
     local game_state = movement.game_state
     if game_state.running then
@@ -32,8 +34,7 @@ M.draw = function()
     love.graphics.print("A Bubble", width / 10, height / 10)
 
     -- Background
-    --local game_background_image = love.graphics.newImage("archive/game-background.png")
-    --love.graphics.draw(game_background_image, background.background.center_x, background.background.center_y, 0, 1, 1, background.background.width / 2, background.background.height)
+	background.draw_backgroud()
 
     -- Bubble
     objects.draw_bubble()
