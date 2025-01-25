@@ -73,12 +73,7 @@ M.update = function(dt)
         end
     end
 
-    local next_screen = beamer:update(dt)
-    if next_screen ~= nil then
-        return next_screen
-    end
-
-    return nil
+    return beamer:update(dt)
 end
 
 return M

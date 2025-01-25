@@ -13,7 +13,7 @@ M.load = function()
         "game_screen",
         0.2
     )
-    
+
     M.background = love.graphics.newImage("archive/menu-background.png")
 end
 
@@ -63,7 +63,7 @@ M.update = function(dt)
         y = y * conf.gameHeight / love.graphics.getHeight()
         print(x, y)
     end
-    
+
     if love.keyboard.isDown("space") then
         beamer:activate()
     end
@@ -83,12 +83,7 @@ M.update = function(dt)
         end
     end
 
-    local next_screen = beamer:update(dt)
-    if next_screen ~= nil then
-        return next_screen
-    end
-
-    return nil
+    return beamer:update(dt)
 end
 
 return M
