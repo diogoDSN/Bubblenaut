@@ -64,7 +64,6 @@ M.on_move_right_key_press = function()
 end
 
 
-
 M.handle_movement = function(dt)
     if #M.bubble_movement.positions > 0 then
         local next_position = M.bubble_movement.positions[1]
@@ -81,30 +80,12 @@ M.handle_movement = function(dt)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:grow()
         end
-
-        if not sounds.inflating:isPlaying() then
-            love.audio.play(sounds.inflating)
-        end
-    else
-        if sounds.inflating:isPlaying() then
-            love.audio.pause(sounds.inflating)
-            sounds.inflating:seek(0, "seconds")
-        end
     end
 
     if love.keyboard.isDown(configs.controls.shrink_key) then
         local new_bubble_boundary_circle = utils.shrunken_bubble_boundary_circle(objects.bubble)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:shrink()
-        end
-
-        if not sounds.deflating:isPlaying() then
-            love.audio.play(sounds.deflating)
-        end
-    else
-        if sounds.deflating:isPlaying() then
-            love.audio.pause(sounds.deflating)
-            sounds.inflating:seek(0, "seconds")
         end
     end
 
