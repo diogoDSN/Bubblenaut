@@ -1,4 +1,5 @@
 local configs = require("lua.screens.game_screen.config")
+local utils = require("lua.screens.game_screen.components.movement.utils")
 local objects = require("lua.screens.game_screen.components.objects")
 
 local M = {}
@@ -37,8 +38,8 @@ end
 
 
 M.update = function()
-    local grow = love.keyboard.isDown(configs.controls.grow_key)
-    local shrink = love.keyboard.isDown(configs.controls.shrink_key)
+    local grow = utils.is_growth()
+    local shrink = utils.is_shrink()
 
     if grow and not shrink and objects.bubble.radius < configs.sizes.max_radius then
         if not inflating:isPlaying() and not inhale:isPlaying() then

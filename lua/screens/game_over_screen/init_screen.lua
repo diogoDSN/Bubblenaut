@@ -1,4 +1,4 @@
-local sounds = require("lua.screens.game_over_screen.sounds")
+local sounds = require("lua.commons.sound_sources")
 local animations = require("lua.commons.animations")
 local router = require("lua.commons.router")
 local conf = require("conf")
@@ -14,7 +14,7 @@ M.load = function()
 
     beamer = router.new_beamer(
         "game_screen",
-        0.2
+        0.3
     )
 
     game_over_sound = {
@@ -25,15 +25,12 @@ M.load = function()
 
     pop_animation = animations.new_animation(
         love.graphics.newImage("archive/bubble_pop.png"),
-        128,
-        128,
-        200,
-        200,
-        0.2,
-        1,
-        1,
-        false,
-        false,
+        128, 128, -- sprite size
+        200, 200, -- position
+        1, 1,     -- pivot
+        0.2,      -- duration
+        false,    -- started
+        false,    -- repeatable
         sounds.pop_cut
     )
 end
@@ -54,6 +51,10 @@ M.update = function(dt)
     if love.keyboard.isDown("space") then
         beamer:activate()
         pop_animation:start()
+    end
+
+    if love.keyboard.isDown("escape") or love.keyboard.isDown("q") then
+        love.event.quit()
     end
 
     local next_screen = beamer:update(dt)
