@@ -7,7 +7,7 @@ M.screens = {
 	win_screen = require("lua.screens.win_screen.init_screen")
 }
 
-M.current_screen = M.screens.game_over_screen
+M.current_screen = M.screens.menu_screen
 
 local NilScreen = {
 	load = function()

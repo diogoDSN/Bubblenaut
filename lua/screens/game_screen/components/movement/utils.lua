@@ -66,4 +66,12 @@ M.clamp = function(v, min, max)
     return v
 end
 
+M.is_growth = function()
+    return love.keyboard.isDown(configs.controls.grow_key)
+end
+
+M.is_shrink = function()
+    return love.keyboard.isDown(configs.controls.shrink_key) or love.mouse.isDown(1)
+end
+
 return M
