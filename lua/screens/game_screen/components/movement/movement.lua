@@ -102,7 +102,10 @@ M.handle_movement = function(dt)
     )
 
     scroll_speed = objects.bubble.radius * scroll_ratio
-    objects.y_position = objects.y_position + scroll_speed * dt
+
+    for _, spike in ipairs(objects.obstacles) do
+        spike[2] = spike[2] + scroll_speed * dt
+    end
 end
 
 return M

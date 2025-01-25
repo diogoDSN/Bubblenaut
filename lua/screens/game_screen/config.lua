@@ -19,9 +19,10 @@ M.steps = {
 M.sizes = {
     initial_radius = 52,
     expansion_factor = 1.05,
-    shrink_factor = 0.95,
     max_radius = 100,
     min_radius = 10,
 }
+
+M.sizes.shrink_factor = 1 / M.sizes.expansion_factor
 
 return M
