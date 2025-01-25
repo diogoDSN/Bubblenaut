@@ -13,6 +13,8 @@ local positions_list = {}
 
 local scroll_speed = 100 -- pixels per second
 
+local debug_prints = true
+
 function love.keypressed(key)
     local left_wall = 0
     local right_wall = love.graphics.getWidth()
@@ -65,6 +67,10 @@ local function clamp(v, min, max)
 end
 
 M.handle_movement = function(dt)
+    if debug_prints then
+        print(1 / dt, "fps")
+    end
+
     local expansion_factor = configs.sizes.expansion_factor
     local shrink_factor = configs.sizes.shrink_factor
 
