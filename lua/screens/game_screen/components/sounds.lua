@@ -3,6 +3,9 @@ local objects = require("lua.screens.game_screen.components.objects")
 
 local M = {}
 
+local RANDOM_NOISE_CHANCE = 0.3
+local SPEECH_DIR = "archive/speech"
+
 local swoosh = love.audio.newSource("archive/sounds/swosh_cut.wav", "static")
 local swoosh_deep = love.audio.newSource("archive/sounds/swosh_deep.wav", "static")
 
@@ -12,7 +15,19 @@ local inflating = love.audio.newSource("archive/sounds/inflating_cut.wav", "stat
 local exhale = love.audio.newSource("archive/sounds/exhale.wav", "static")
 local deflating = love.audio.newSource("archive/sounds/deflating_cut.wav", "static")
 
-local RANDOM_NOISE_CHANCE = 0.3
+local speeches = {
+    sources = {},
+    playing = false,
+    current_player = -1,
+}
+
+local files = love.filesystem.getDirectoryItems(SPEECH_DIR)
+for k, file in ipairs(files) do
+    if file:find(".wav") then
+        local full_path = SPEECH_DIR .. "/" .. file
+        table.insert(speeches.sources, love.audio.newSource(full_path, "static"))
+    end
+end
 
 
 local inflation_percent = function(current_radius)
@@ -75,6 +90,17 @@ M.update = function()
         else
             love.audio.play(swoosh)
         end
+    end
+
+    if math.random() < 0.5
+        and (
+            speeches.current_player == -1
+            or not
+            speeches.sources[speeches.current_player]:isPlaying()
+        ) then
+        speeches.current_player = math.random(1, #speeches.sources)
+        speeches.sources[speeches.current_player]:setVolume(0.5)
+        love.audio.play(speeches.sources[speeches.current_player])
     end
 end
 
