@@ -14,6 +14,12 @@ M.bubble = {
     sideways_movement_locked = false,
 }
 
+M.little_girl = {
+    pos_y = conf.gameHeight - 10,
+    pos_x = conf.gameWidth / 2,
+    target_x = conf.gameWidth / 2,
+}
+
 function M.bubble.grow(self)
     local expansion_factor = configs.sizes.expansion_factor
     local step_increase_factor = configs.steps.step_increase_factor
@@ -98,6 +104,42 @@ M.draw_finish_line = function()
     )
 end
 
+M.draw_little_girl = function()
+    love.graphics.draw(
+        M.little_girl_sprite,
+        M.little_girl.pos_x,
+        M.little_girl.pos_y
+    )
+end
+
+-- make the little girl hand go after the bubble with certain speeds
+M.update_little_girl_state = function(dt)
+    M.little_girl.target_x = M.bubble.center_x - M.little_girl.width / 2
+    local max_displacement = M.little_girl.target_x - M.little_girl.pos_x
+
+    if dt * configs.little_girl.h_speed_ratio >= math.abs(max_displacement) then
+        M.little_girl.pos_x = M.little_girl.pos_x + max_displacement
+    elseif max_displacement < 0 then
+        M.little_girl.pos_x = M.little_girl.pos_x - dt * configs.little_girl.h_speed_ratio
+    elseif max_displacement > 0 then
+        M.little_girl.pos_x = M.little_girl.pos_x + dt * configs.little_girl.h_speed_ratio
+    end
+
+    -- the objective here would be to make it so that the speed of the hand is inverse
+    -- to the radius of the bubble (i.e., such that it seems we're getting faster away from
+    -- the hand), and add a threshold in which we assume the speed of the hand is slower than
+    -- the bubble (i.e., invert position sum)
+    local new_y = M.little_girl.pos_y -
+        configs.little_girl.v_speed_ratio *
+        dt *
+        (configs.little_girl.v_speed_threshold - M.bubble.radius) /
+        M.bubble.radius
+    if new_y > conf.gameHeight - 10 then
+        new_y = conf.gameHeight - 10
+    end
+    M.little_girl.pos_y = new_y
+end
+
 local bubble_y_offset = conf.gameHeight / 5
 
 M.setupGame = function()
@@ -110,6 +152,8 @@ M.setupGame = function()
     M.spike_pivot_y = M.spike_sprite:getHeight() / 2
 
     M.finish_line_sprite = love.graphics.newImage("archive/fence.png")
+    M.little_girl_sprite = love.graphics.newImage("archive/girl.png")
+    M.little_girl.width = M.little_girl_sprite:getWidth()
 
 
     M.bubble.center_x = conf.gameWidth / 2
@@ -144,59 +188,59 @@ M.setupGame = function()
     )
 
     M.obstacles = {
-       -- {x, y} coordinates in a grid of width 14, obstacles are 2 columns wide
-       -- x is a number between 1 and 13, the obstacle will be in columns x and x+1
-       -- y is a negative number
-       {2, 6},
-       {10, 0},
-       {12, 0},
-       {2, -8},
-       {4, -8},
-       {6, -8},
-       {1, -20},
-       {13, -20},
-       {3, -22},
-       {11, -22},
-       {5, -24},
-       {9, -24},
-       {7, -34},
-       {5, -36},
-       {7, -36},
-       {9, -36},
-       {7, -38},
-       {1, -46},
-       {3, -46},
-       {5, -46},
-       {7, -46},
-       {4, -54},
-       {7, -54},
-       {10, -54},
-       {13, -54},
-       {1, -64},
-       {5, -64},
-       {9, -64},
-       {13, -64},
-       {3, -68},
-       {7, -68},
-       {11, -68},
-       {6, -74},
-       {12, -77},
-       {2, -78},
-       {9, -80},
-       {5, -82},
-       {12, -84},
-       {10, -85},
-       {3, -87},
-       {7, -88},
-       {1, -90},
-       {12, -90}
+        -- {x, y} coordinates in a grid of width 14, obstacles are 2 columns wide
+        -- x is a number between 1 and 13, the obstacle will be in columns x and x+1
+        -- y is a negative number
+        { 2,  6 },
+        { 10, 0 },
+        { 12, 0 },
+        { 2,  -8 },
+        { 4,  -8 },
+        { 6,  -8 },
+        { 1,  -20 },
+        { 13, -20 },
+        { 3,  -22 },
+        { 11, -22 },
+        { 5,  -24 },
+        { 9,  -24 },
+        { 7,  -34 },
+        { 5,  -36 },
+        { 7,  -36 },
+        { 9,  -36 },
+        { 7,  -38 },
+        { 1,  -46 },
+        { 3,  -46 },
+        { 5,  -46 },
+        { 7,  -46 },
+        { 4,  -54 },
+        { 7,  -54 },
+        { 10, -54 },
+        { 13, -54 },
+        { 1,  -64 },
+        { 5,  -64 },
+        { 9,  -64 },
+        { 13, -64 },
+        { 3,  -68 },
+        { 7,  -68 },
+        { 11, -68 },
+        { 6,  -74 },
+        { 12, -77 },
+        { 2,  -78 },
+        { 9,  -80 },
+        { 5,  -82 },
+        { 12, -84 },
+        { 10, -85 },
+        { 3,  -87 },
+        { 7,  -88 },
+        { 1,  -90 },
+        { 12, -90 }
     }
 
     for _, spike in ipairs(M.obstacles) do
         spike[1] = spike[1] * M.spike_radius
         spike[2] = spike[2] * M.spike_radius
     end
-       
+
     M.finish_line = -95 * M.spike_radius
     M.game_state = ""
 end

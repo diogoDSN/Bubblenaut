@@ -29,6 +29,7 @@ M.update = function(dt)
     sounds.update()
 
     objects.update_bubble_animation(dt)
+    objects.update_little_girl_state(dt)
 
     if colisions.applyColisions() then
         objects.game_state = "game_over_screen"
@@ -65,6 +66,9 @@ M.draw = function()
 
     -- Obstacles
     objects.draw_obstacles()
+
+    -- And the little girl
+    objects.draw_little_girl()
 end
 
 M.keypressed = function(key)

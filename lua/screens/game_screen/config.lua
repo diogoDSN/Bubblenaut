@@ -26,4 +26,10 @@ M.sizes = {
 
 M.sizes.shrink_factor = 1 / M.sizes.expansion_factor
 
+M.little_girl = {
+    h_speed_ratio = 200,
+    v_speed_ratio = 20,
+    v_speed_threshold = 50
+}
+
 return M
