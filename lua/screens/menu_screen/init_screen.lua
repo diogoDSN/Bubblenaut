@@ -1,7 +1,5 @@
 local M = {}
 
-game_screen = require "lua/screens/game_screen/init_screen"
-
 M.load = function ()
     print("Menu screen loaded")
 end
@@ -21,7 +19,7 @@ end
 
 M.update = function (dt)
     if love.keyboard.isDown("space") then
-        return game_screen
+        return "game_screen"
     end
 
 	return nil
