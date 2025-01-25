@@ -84,6 +84,13 @@ M.draw_obstacles = function()
     end
 end
 
+M.draw_finish_line = function()
+    love.graphics.draw(
+        M.finish_line_sprite,
+        0, M.finish_line
+    )
+end
+
 local bubble_y_offset = conf.gameHeight / 5
 
 M.setupGame = function()
@@ -93,6 +100,8 @@ M.setupGame = function()
     M.spike_scale_factor = 2 * M.spike_radius / M.spike_sprite:getWidth()
     M.spike_pivot_x = M.spike_sprite:getWidth() / 2
     M.spike_pivot_y = M.spike_sprite:getHeight() / 2
+
+    M.finish_line_sprite = love.graphics.newImage("archive/fence.png")
 
 
     M.bubble.center_x = conf.gameWidth / 2

@@ -47,6 +47,9 @@ M.draw = function()
     -- Background
     background.draw_backgroud()
 
+    -- Finish line
+    objects.draw_finish_line()
+
     -- Bubble
     objects.draw_bubble()
 
