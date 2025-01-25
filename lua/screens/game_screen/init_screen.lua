@@ -2,6 +2,7 @@ local movement = require("lua.screens.game_screen.components.movement.movement")
 local objects = require("lua.screens.game_screen.components.objects")
 local graphics = require("lua.screens.game_screen.components.graphics")
 local background = require("lua.screens.game_screen.components.background")
+local sounds = require("lua.screens.game_screen.components.sounds")
 local conf = require "conf"
 local configs = require("lua.screens.game_screen.config")
 
@@ -9,14 +10,15 @@ local M = {}
 
 -- runs once when opening the game screen
 M.load = function()
-	objects.setupGame()
-	background.setup_background()
+    objects.setupGame()
+    background.setup_background()
 end
 
 -- function to run when love updates the game state, runs before drawing
 M.update = function(dt)
     movement.handle_movement(dt)
-	background.update_background()
+    background.update_background()
+    sounds.update()
 
     local game_state = movement.game_state
     if game_state.running then
@@ -35,7 +37,7 @@ M.draw = function()
     love.graphics.print("A Bubble", width / 10, height / 10)
 
     -- Background
-	background.draw_backgroud()
+    background.draw_backgroud()
 
     -- Bubble
     objects.draw_bubble()

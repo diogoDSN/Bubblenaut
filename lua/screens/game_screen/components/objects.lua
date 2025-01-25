@@ -77,7 +77,7 @@ M.draw_obstacles = function()
     end
 end
 
-local bubble_y_offset = conf.gameHeight / 3
+local bubble_y_offset = conf.gameHeight / 5
 
 M.setupGame = function()
     M.bubble.sprite = love.graphics.newImage("archive/bubble.png")
