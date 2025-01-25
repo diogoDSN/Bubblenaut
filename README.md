@@ -17,5 +17,8 @@ love .
 ```
 
 ## Assets
-The assets used in this game are stored in the `archive` directory. The game assets have a resolution of 128x128.
-The background has a width of 540.
+The assets used in this game are stored in the `archive` directory. The game assets have a resolution of `128x128px`.
+The background has a width of `540px`.
+
+## Resizing the Window
+This is handled by the `push` library. The game is designed to run at a resolution of `540x540px`, but it can be resized to any resolution.
