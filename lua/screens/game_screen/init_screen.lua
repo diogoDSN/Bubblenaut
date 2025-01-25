@@ -1,7 +1,8 @@
-local movement = require("lua.screens.game_screen.components.movement")
+local movement = require("lua.screens.game_screen.components.movement.movement")
 local objects = require("lua.screens.game_screen.components.objects")
 local graphics = require("lua.screens.game_screen.components.graphics")
 local background = require("lua.screens.game_screen.components.background")
+local conf = require "conf"
 
 local M = {}
 
@@ -15,12 +16,19 @@ end
 M.update = function(dt)
     movement.handle_movement(dt)
 	background.update_background()
+
+    local game_state = movement.game_state
+    if game_state.running then
+        return nil
+    else
+        return "game_over"
+    end
 end
 
 -- function to run when love draws the game screen
 M.draw = function()
-    local width = love.graphics.getWidth()
-    local height = love.graphics.getHeight()
+    local width = conf.gameWidth
+    local height = conf.gameHeight
 
     love.graphics.setColor(1, 1, 1)
     love.graphics.print("A Bubble", width / 10, height / 10)
@@ -37,7 +45,6 @@ M.draw = function()
     love.graphics.circle("line", objects.spike.center_x, objects.spike.center_y, objects.spike.outer_radius)
     love.graphics.setColor(graphics.spike_fill_color(objects.spike))
     love.graphics.circle("fill", objects.spike.center_x, objects.spike.center_y, objects.spike.inner_radius)
-
 end
 
 return M

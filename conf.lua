@@ -1,7 +1,11 @@
 function love.conf(t)
-    t.title = "Bubblenaut"    
-    t.window.width = 540
-    t.window.height = 1024
-    t.window.resizable = false
-    t.window.fullscreen = false
+    t.title = "Bubblenaut"
 end
+
+local conf = {
+    gameWidth = 540,
+    gameHeight = 540
+    --fixed game resolution
+}
+
+return conf
