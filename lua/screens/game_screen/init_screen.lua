@@ -3,7 +3,7 @@ local objects = require("lua.screens.game_screen.components.objects")
 local graphics = require("lua.screens.game_screen.components.graphics")
 local background = require("lua.screens.game_screen.components.background")
 
-local bubble_y_offset = love.graphics.getHeight() / 2
+local bubble_y_offset = love.graphics.getHeight() / 3
 
 local M = {}
 
