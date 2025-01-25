@@ -9,6 +9,8 @@ windowWidth, windowHeight = windowHeight*.9, windowHeight*.9 --make the window a
 
 push:setupScreen(gameWidth, gameHeight, windowWidth, windowHeight, {fullscreen = false})
 
+math.randomseed(os.time())
+
 function love.load()
     state.current_screen.load()
 end
