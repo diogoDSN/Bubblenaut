@@ -59,6 +59,9 @@ M.update = function(dt)
         beamer:activate()
     end
 
+    if love.keyboard.isDown("escape") or love.keyboard.isDown("q") then
+        love.event.quit()
+    end
     if love.mouse.isDown(1) then
         local x, y = love.mouse.getPosition()
         x = x * conf.gameWidth / love.graphics.getWidth()
