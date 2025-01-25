@@ -25,15 +25,12 @@ M.load = function()
 
     pop_animation = animations.new_animation(
         love.graphics.newImage("archive/bubble_pop.png"),
-        128,
-        128,
-        200,
-        200,
-        0.2,
-        1,
-        1,
-        false,
-        false,
+        128, 128, -- sprite size
+        200, 200, -- position
+        1, 1,     -- pivot
+        0.2,      -- duration
+        false,    -- started
+        false,    -- repeatable
         sounds.pop_cut
     )
 end

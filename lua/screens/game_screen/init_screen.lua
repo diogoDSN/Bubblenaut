@@ -33,6 +33,7 @@ M.update = function(dt)
     if colisions.applyColisions() then
         objects.game_state = "game_over_screen"
         objects.pop_animation:start()
+        objects.pop_animation:update(dt)
     end
 
     if objects.game_state ~= "" then
