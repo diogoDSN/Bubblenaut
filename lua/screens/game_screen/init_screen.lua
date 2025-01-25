@@ -7,7 +7,7 @@ local M = {}
 
 -- runs once when opening the game screen
 M.load = function()
-	objects.setupGame()
+    objects.setupGame()
 end
 
 -- function to run when love updates the game state, runs before drawing
@@ -43,7 +43,6 @@ M.draw = function()
     love.graphics.circle("line", objects.spike.center_x, objects.spike.center_y, objects.spike.outer_radius)
     love.graphics.setColor(graphics.spike_fill_color(objects.spike))
     love.graphics.circle("fill", objects.spike.center_x, objects.spike.center_y, objects.spike.inner_radius)
-
 end
 
 return M

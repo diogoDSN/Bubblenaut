@@ -1,7 +1,6 @@
 local configs = require("lua.screens.game_screen.config")
 local objects = require("lua.screens.game_screen.components.objects")
 local sounds = require("lua.screens.game_screen.components.sounds")
-local graphics = require("lua.screens.game_screen.components.graphics")
 local utils = require("lua.screens.game_screen.components.movement.utils")
 
 local M = {}
@@ -10,56 +9,62 @@ M.game_state = {
     running = true,
 }
 
-local left_movement_enabled = true
-local right_movement_enabled = true
-
-local positions_list = {}
+M.bubble_movement = {
+    sideways_movement_locked = false,
+    positions = {},
+}
 
 local scroll_speed = 100 -- pixels per second
 
 local debug_prints = false
 
 function love.keypressed(key)
-    local left_wall = 0
-    local right_wall = love.graphics.getWidth()
+    if key == configs.controls.move_left_key then
+        if not M.bubble_movement.sideways_movement_locked then
+            local animation_step = configs.steps.animation_step
+            local starting_position = objects.bubble.center_x
+            local final_position = objects.bubble.center_x - objects.bubble.step
+            for i = 1, animation_step do
+                local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
+                local can_move_left = utils.bubble_can_move(objects.bubble, { x = new_x, y = objects.bubble.center_y })
 
-    local starting_position = objects.bubble.center_x
-    local animation_step = configs.steps.animation_step
-    if key == configs.controls.move_left_key and left_movement_enabled then
-        local final_position = objects.bubble.center_x - objects.bubble.step
-        for i = 1, animation_step do
-            local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
-            local can_move_left = new_x - objects.bubble.outer_radius -
-                graphics.bubble_outer_line_width(objects.bubble) / 2 >= left_wall
+                if can_move_left then
+                    table.insert(M.bubble_movement.positions, {
+                        x = starting_position + (i / animation_step) * (final_position - starting_position),
+                        y = objects.bubble.center_y,
+                    })
+                end
+            end
 
-            if can_move_left then
-                table.insert(positions_list, {
-                    x = starting_position + (i / animation_step) * (final_position - starting_position),
-                    y = objects.bubble.center_y,
-                })
+            if #M.bubble_movement.positions > 0 then
+                M.bubble_movement.sideways_movement_locked = true
             end
         end
-        left_movement_enabled = false
     end
 
-    if key == configs.controls.move_right_key and right_movement_enabled then
-        local final_position = objects.bubble.center_x + objects.bubble.step
-        for i = 1, animation_step do
-            local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
-            local can_move_right = new_x + objects.bubble.outer_radius +
-                graphics.bubble_outer_line_width(objects.bubble) / 2 <= right_wall
+    if key == configs.controls.move_right_key then
+        if not M.bubble_movement.sideways_movement_locked then
+            local animation_step = configs.steps.animation_step
+            local starting_position = objects.bubble.center_x
+            local final_position = objects.bubble.center_x + objects.bubble.step
+            for i = 1, animation_step do
+                local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
+                local can_move = utils.bubble_can_move(objects.bubble, { x = new_x, y = objects.bubble.center_y })
 
-            if can_move_right then
-                table.insert(positions_list, {
-                    x = starting_position + (i / animation_step) * (final_position - starting_position),
-                    y = objects.bubble.center_y,
-                })
+                if can_move then
+                    table.insert(M.bubble_movement.positions, {
+                        x = new_x,
+                        y = objects.bubble.center_y,
+                    })
+                end
+            end
+
+            if #M.bubble_movement.positions > 0 then
+                M.bubble_movement.sideways_movement_locked = true
             end
         end
-        right_movement_enabled = false
     end
 end
-
 
 M.handle_movement = function(dt)
     if debug_prints then
@@ -67,14 +72,14 @@ M.handle_movement = function(dt)
     end
 
 
-    if #positions_list > 0 then
-        local next_position = positions_list[1]
-        objects.bubble.center_x = next_position.x
-        objects.bubble.center_y = next_position.y
-        table.remove(positions_list, 1)
-    else
-        left_movement_enabled = true
-        right_movement_enabled = true
+    if #M.bubble_movement.positions > 0 then
+        local next_position = M.bubble_movement.positions[1]
+        objects.bubble:move(next_position)
+        table.remove(M.bubble_movement.positions, 1)
+    end
+
+    if #M.bubble_movement.positions == 0 then
+        M.bubble_movement.sideways_movement_locked = false
     end
 
     if love.keyboard.isDown(configs.controls.grow_key) then

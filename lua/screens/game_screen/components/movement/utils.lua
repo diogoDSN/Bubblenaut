@@ -31,7 +31,7 @@ M.bubble_can_move = function(bubble, position)
     local final_circle = {
         center_x = position.x,
         center_y = position.y,
-        radius = bubble.outer_radius + bubble.get_outer_line_width() / 2
+        radius = bubble.outer_radius + bubble:get_outer_line_width() / 2
     }
     return M.circle_inside_screen(final_circle)
 end
