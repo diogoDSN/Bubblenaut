@@ -1,6 +1,7 @@
 local sounds = require("lua.screens.game_over_screen.sounds")
 local animations = require("lua.commons.animations")
 local router = require("lua.commons.router")
+local conf = require("conf")
 
 local M = {}
 
@@ -35,8 +36,8 @@ end
 M.draw = function()
     love.graphics.setColor(1, 1, 1, 1)
     love.graphics.setFont(love.graphics.newFont(40))
-    love.graphics.printf("Game Over :(", 0, love.graphics.getHeight() / 8, love.graphics.getWidth(), "center")
-    love.graphics.printf("Press SPACE to try again", 0, love.graphics.getHeight() / 2, love.graphics.getWidth(), "center")
+    love.graphics.printf("Game Over :(", 0, conf.gameHeight / 8, conf.gameWidth, "center")
+    love.graphics.printf("Press SPACE to try again", 0, conf.gameHeight / 2, conf.gameWidth, "center")
 
 
     pop_animation:draw()
