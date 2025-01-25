@@ -3,6 +3,7 @@ local objects = require("lua.screens.game_screen.components.objects")
 local graphics = require("lua.screens.game_screen.components.graphics")
 local background = require("lua.screens.game_screen.components.background")
 local conf = require "conf"
+local configs = require("lua.screens.game_screen.config")
 
 local M = {}
 
@@ -41,6 +42,16 @@ M.draw = function()
 
     -- Obstacles
     objects.draw_obstacles()
+end
+
+M.keypressed = function(key)
+    if key == configs.controls.move_left_key then
+        movement.on_move_left_key_press()
+    end
+
+    if key == configs.controls.move_right_key then
+        movement.on_move_right_key_press()
+    end
 end
 
 return M
