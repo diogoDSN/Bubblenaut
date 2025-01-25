@@ -17,7 +17,7 @@ local positions_list = {}
 
 local scroll_speed = 100 -- pixels per second
 
-local debug_prints = true
+local debug_prints = false
 
 function love.keypressed(key)
     local left_wall = 0
@@ -60,26 +60,12 @@ function love.keypressed(key)
     end
 end
 
-local function clamp(v, min, max)
-    if v > max then
-        return max
-    end
-    if v < min then
-        return min
-    end
-    return v
-end
 
 M.handle_movement = function(dt)
     if debug_prints then
         print(1 / dt, "fps")
     end
 
-    local expansion_factor = configs.sizes.expansion_factor
-    local shrink_factor = configs.sizes.shrink_factor
-
-    local step_increase_factor = configs.steps.step_increase_factor
-    local step_reduction_factor = configs.steps.step_reduction_factor
 
     if #positions_list > 0 then
         local next_position = positions_list[1]
@@ -91,30 +77,10 @@ M.handle_movement = function(dt)
         right_movement_enabled = true
     end
 
-    local max_x = love.graphics.getWidth()
-    local min_x = 0
-    local max_y = love.graphics.getHeight()
-    local min_y = 0
     if love.keyboard.isDown(configs.controls.grow_key) then
-        local new_inner_radius = objects.bubble.inner_radius * expansion_factor
-        local new_outer_radius = objects.bubble.outer_radius * expansion_factor
-
-        objects.bubble.step = objects.bubble.step * step_increase_factor
-
-        local new_bubble_max_x = objects.bubble.center_x + new_outer_radius +
-            graphics.bubble_outer_line_width(objects.bubble) / 2
-        local new_bubble_min_x = objects.bubble.center_x - new_outer_radius -
-            graphics.bubble_outer_line_width(objects.bubble) / 2
-        local new_bubble_max_y = objects.bubble.center_y + new_outer_radius +
-            graphics.bubble_outer_line_width(objects.bubble) / 2
-        local new_bubble_min_y = objects.bubble.center_y - new_outer_radius -
-            graphics.bubble_outer_line_width(objects.bubble) / 2
-
-        if new_bubble_max_x <= max_x and new_bubble_min_x >= min_x and new_bubble_max_y <= max_y and new_bubble_min_y >= min_y then
-            objects.bubble.inner_radius = new_inner_radius
-            objects.bubble.outer_radius = new_outer_radius
-
-            objects.bubble.step = objects.bubble.step * step_increase_factor
+        local new_bubble_boundary_circle = utils.expanded_bubble_boundary_circle(objects.bubble)
+        if utils.circle_inside_screen(new_bubble_boundary_circle) then
+            objects.bubble:grow()
         end
 
         if not sounds.inflating:isPlaying() then
@@ -128,25 +94,9 @@ M.handle_movement = function(dt)
     end
 
     if love.keyboard.isDown(configs.controls.shrink_key) then
-        local new_inner_radius = objects.bubble.inner_radius * shrink_factor
-        local new_outer_radius = objects.bubble.outer_radius * shrink_factor
-
-        objects.bubble.step = objects.bubble.step * step_reduction_factor
-
-        local new_bubble_max_x = objects.bubble.center_x + new_outer_radius +
-            graphics.bubble_outer_line_width(objects.bubble) / 2
-        local new_bubble_min_x = objects.bubble.center_x - new_outer_radius -
-            graphics.bubble_outer_line_width(objects.bubble) / 2
-        local new_bubble_max_y = objects.bubble.center_y + new_outer_radius +
-            graphics.bubble_outer_line_width(objects.bubble) / 2
-        local new_bubble_min_y = objects.bubble.center_y - new_outer_radius -
-            graphics.bubble_outer_line_width(objects.bubble) / 2
-
-        if new_bubble_max_x <= max_x and new_bubble_min_x >= min_x and new_bubble_max_y <= max_y and new_bubble_min_y >= min_y then
-            objects.bubble.inner_radius = new_inner_radius
-            objects.bubble.outer_radius = new_outer_radius
-
-            objects.bubble.step = objects.bubble.step * step_reduction_factor
+        local new_bubble_boundary_circle = utils.shrunken_bubble_boundary_circle(objects.bubble)
+        if utils.circle_inside_screen(new_bubble_boundary_circle) then
+            objects.bubble:shrink()
         end
 
         if not sounds.deflating:isPlaying() then
@@ -159,19 +109,19 @@ M.handle_movement = function(dt)
         end
     end
 
-    objects.bubble.inner_radius = clamp(
+    objects.bubble.inner_radius = utils.clamp(
         objects.bubble.inner_radius,
         configs.sizes.min_inner_radius,
         configs.sizes.max_inner_radius
     )
 
-    objects.bubble.outer_radius = clamp(
+    objects.bubble.outer_radius = utils.clamp(
         objects.bubble.outer_radius,
         configs.sizes.min_outer_radius,
         configs.sizes.max_outer_radius
     )
 
-    objects.bubble.step = clamp(
+    objects.bubble.step = utils.clamp(
         objects.bubble.step,
         configs.steps.min_step,
         configs.steps.max_step

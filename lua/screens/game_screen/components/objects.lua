@@ -10,10 +10,46 @@ M.bubble = {
     step = 0,
 }
 
+function M.bubble.get_outer_line_width(self)
+    return 2 * (self.outer_radius - self.inner_radius)
+end
+
+function M.bubble.grow(self)
+    local expansion_factor = configs.sizes.expansion_factor
+    local step_increase_factor = configs.steps.step_increase_factor
+
+    local new_inner_radius = self.inner_radius * expansion_factor
+    local new_outer_radius = self.outer_radius * expansion_factor
+
+    self.inner_radius = new_inner_radius
+    self.outer_radius = new_outer_radius
+
+    self.step = self.step * step_increase_factor
+end
+
+function M.bubble.shrink(self)
+    local shrink_factor = configs.sizes.shrink_factor
+    local step_reduction_factor = configs.steps.step_reduction_factor
+
+    local new_inner_radius = self.inner_radius * shrink_factor
+    local new_outer_radius = self.outer_radius * shrink_factor
+
+    self.inner_radius = new_inner_radius
+    self.outer_radius = new_outer_radius
+
+    self.step = self.step * step_reduction_factor
+end
+
+
+function M.bubble.move(self, position)
+    -- position is a table with properties x and y
+    self.center_x = position.x
+    self.center_y = position.y
+end
+
 M.draw_bubble = function()
 	local bubble_sprite_width = M.bubble.sprite:getWidth()
 	local bubble_sprite_height = M.bubble.sprite:getHeight()
-	
 	-- Calculate center of the image
 	local center_x = bubble_sprite_width / 2
 	local center_y = bubble_sprite_height / 2
@@ -52,21 +88,6 @@ M.setupGame = function()
 end
 
 
-function M.bubble.get_outer_line_width(self)
-    return 2 * (self.outer_radius - self.inner_radius)
-end
-
-function M.bubble.grow(self)
-    local expansion_factor = configs.sizes.expansion_factor
-    local shrink_factor = configs.sizes.shrink_factor
-
-    local new_inner_radius = self.inner_radius * expansion_factor
-    local new_outer_radius = objects.bubble.outer_radius * expansion_factor
-    self.inner_radius = new_inner_radius
-    objects.bubble.outer_radius = new_outer_radius
-
-    objects.bubble.step = objects.bubble.step * step_increase_factor
-end
 
 M.spike = {
     center_x = 800,
