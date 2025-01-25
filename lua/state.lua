@@ -9,18 +9,18 @@ M.screens = {
 M.current_screen = M.screens.menu_screen
 
 local NilScreen = {
-	load = function ()
+	load = function()
 		print "The NilScreen has no load function."
 	end,
-	draw = function ()
+	draw = function()
 		print "The NilScreen has no draw function."
 	end,
-	update = function (dt)
+	update = function(dt)
 		print "The NilScreen has no update function."
 	end,
 }
 
-M.setScreen = function (screenName)
+M.setScreen = function(screenName)
 	local newScreen = M.screens[screenName]
 	if newScreen == nil then
 		newScreen = NilScreen
