@@ -87,11 +87,31 @@ M.handle_movement = function(dt)
         right_movement_enabled = true
     end
 
+    local max_x = love.graphics.getWidth()
+    local min_x = 0
+    local max_y = love.graphics.getHeight()
+    local min_y = 0
     if love.keyboard.isDown(configs.controls.grow_key) then
-        objects.bubble.inner_radius = objects.bubble.inner_radius * expansion_factor
-        objects.bubble.outer_radius = objects.bubble.outer_radius * expansion_factor
+        local new_inner_radius = objects.bubble.inner_radius * expansion_factor
+        local new_outer_radius = objects.bubble.outer_radius * expansion_factor
 
         objects.bubble.step = objects.bubble.step * step_increase_factor
+
+        local new_bubble_max_x = objects.bubble.center_x + new_outer_radius +
+            graphics.bubble_outer_line_width(objects.bubble) / 2
+        local new_bubble_min_x = objects.bubble.center_x - new_outer_radius -
+            graphics.bubble_outer_line_width(objects.bubble) / 2
+        local new_bubble_max_y = objects.bubble.center_y + new_outer_radius +
+            graphics.bubble_outer_line_width(objects.bubble) / 2
+        local new_bubble_min_y = objects.bubble.center_y - new_outer_radius -
+            graphics.bubble_outer_line_width(objects.bubble) / 2
+
+        if new_bubble_max_x <= max_x and new_bubble_min_x >= min_x and new_bubble_max_y <= max_y and new_bubble_min_y >= min_y then
+            objects.bubble.inner_radius = new_inner_radius
+            objects.bubble.outer_radius = new_outer_radius
+
+            objects.bubble.step = objects.bubble.step * step_increase_factor
+        end
 
         if not sounds.inflating:isPlaying() then
             love.audio.play(sounds.inflating)
@@ -104,10 +124,26 @@ M.handle_movement = function(dt)
     end
 
     if love.keyboard.isDown(configs.controls.shrink_key) then
-        objects.bubble.inner_radius = objects.bubble.inner_radius * shrink_factor
-        objects.bubble.outer_radius = objects.bubble.outer_radius * shrink_factor
+        local new_inner_radius = objects.bubble.inner_radius * shrink_factor
+        local new_outer_radius = objects.bubble.outer_radius * shrink_factor
 
         objects.bubble.step = objects.bubble.step * step_reduction_factor
+
+        local new_bubble_max_x = objects.bubble.center_x + new_outer_radius +
+            graphics.bubble_outer_line_width(objects.bubble) / 2
+        local new_bubble_min_x = objects.bubble.center_x - new_outer_radius -
+            graphics.bubble_outer_line_width(objects.bubble) / 2
+        local new_bubble_max_y = objects.bubble.center_y + new_outer_radius +
+            graphics.bubble_outer_line_width(objects.bubble) / 2
+        local new_bubble_min_y = objects.bubble.center_y - new_outer_radius -
+            graphics.bubble_outer_line_width(objects.bubble) / 2
+
+        if new_bubble_max_x <= max_x and new_bubble_min_x >= min_x and new_bubble_max_y <= max_y and new_bubble_min_y >= min_y then
+            objects.bubble.inner_radius = new_inner_radius
+            objects.bubble.outer_radius = new_outer_radius
+
+            objects.bubble.step = objects.bubble.step * step_reduction_factor
+        end
 
         if not sounds.deflating:isPlaying() then
             love.audio.play(sounds.deflating)
@@ -139,7 +175,7 @@ M.handle_movement = function(dt)
 
     objects.spike.center_y = objects.spike.center_y + scroll_speed * dt
 
-    background.background.center_y = background.background.center_y + scroll_speed * dt
+    --background.background.center_y = background.background.center_y + scroll_speed * dt
 end
 
 return M
