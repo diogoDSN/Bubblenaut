@@ -6,7 +6,7 @@ M.screens = {
 	game_over_screen = require("lua.screens.game_over_screen.init_screen"),
 }
 
-M.current_screen = M.screens.menu_screen
+M.current_screen = M.screens.game_over_screen
 
 local NilScreen = {
 	load = function()

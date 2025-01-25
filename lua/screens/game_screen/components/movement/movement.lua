@@ -16,8 +16,6 @@ M.bubble_movement = {
 
 local scroll_speed = 100 -- pixels per second
 
-local debug_prints = false
-
 function love.keypressed(key)
     if key == configs.controls.move_left_key then
         if not M.bubble_movement.sideways_movement_locked then
@@ -67,11 +65,6 @@ function love.keypressed(key)
 end
 
 M.handle_movement = function(dt)
-    if debug_prints then
-        print(1 / dt, "fps")
-    end
-
-
     if #M.bubble_movement.positions > 0 then
         local next_position = M.bubble_movement.positions[1]
         objects.bubble:move(next_position)

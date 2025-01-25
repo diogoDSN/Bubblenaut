@@ -57,11 +57,11 @@ M.draw_bubble = function()
     local scale_factor = (M.bubble.outer_radius / bubble_sprite_width) * 2
 
     love.graphics.draw(
-        M.bubble.sprite,                -- sprite
+        M.bubble.sprite,                      -- sprite
         M.bubble.center_x, M.bubble.center_y, -- position
-        0,                              -- rotation
-        scale_factor, scale_factor,     -- scaling
-        center_x, center_y              -- pivot
+        0,                                    -- rotation
+        scale_factor, scale_factor,           -- scaling
+        center_x, center_y                    -- pivot
     )
 end
 
