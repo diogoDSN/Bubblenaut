@@ -28,6 +28,16 @@ function love.keyreleased(key)
     end
 end
 
+local function clamp(v, min, max)
+    if v > max then
+        return max
+    end
+    if v < min then
+        return min
+    end
+    return v
+end
+
 M.handle_movement = function(dt)
     local expansion_factor = configs.sizes.expansion_factor
     local shrink_factor = configs.sizes.shrink_factor
@@ -47,6 +57,24 @@ M.handle_movement = function(dt)
 
         objects.bubble.step = objects.bubble.step * step_reduction_factor
     end
+
+    objects.bubble.inner_radius = clamp(
+        objects.bubble.inner_radius,
+        configs.sizes.min_inner_radius,
+        configs.sizes.max_inner_radius
+    )
+
+    objects.bubble.outer_radius = clamp(
+        objects.bubble.outer_radius,
+        configs.sizes.min_outer_radius,
+        configs.sizes.max_outer_radius
+    )
+
+    objects.bubble.step = clamp(
+        objects.bubble.step,
+        configs.steps.min_step,
+        configs.steps.max_step
+    )
 end
 
 return M
