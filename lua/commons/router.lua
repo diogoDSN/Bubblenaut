@@ -9,7 +9,8 @@ local new_beamer = function(dest_page, duration)
         destination = dest_page
     }
 
-    function beamer.activate(self)
+    function beamer.activate(self, dest_page)
+        self.destination = dest_page or self.destination
         self.activated = true
     end
 

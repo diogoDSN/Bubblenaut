@@ -40,31 +40,31 @@ local new_animation = function(
     repeatable,
     sound_track
 )
-    local animation = {}
-    animation.sprite_sheet = sprite_sheet;
-    animation.quads = {};
-    animation.quad_n = 0;
+    local a = {}
+    a.sprite_sheet = sprite_sheet;
+    a.quads = {};
+    a.quad_n = 0;
 
     for y = 0, sprite_sheet:getHeight() - height, height do
         for x = 0, sprite_sheet:getWidth() - width, width do
-            table.insert(animation.quads, love.graphics.newQuad(x, y, width, height, sprite_sheet:getDimensions()))
-            animation.quad_n = animation.quad_n + 1;
+            table.insert(a.quads, love.graphics.newQuad(x, y, width, height, sprite_sheet:getDimensions()))
+            a.quad_n = a.quad_n + 1;
         end
     end
 
-    animation.duration = duration or 1
-    animation.current_time = 0
-    animation.played = false
-    animation.started = pre_started
-    animation.repeatable = repeatable
+    a.duration = duration or 1
+    a.current_time = 0
+    a.played = false
+    a.started = pre_started
+    a.repeatable = repeatable
 
     if sound_track ~= nil then
         local sound_duration = sound_track:getDuration("seconds")
         sound_track:setPitch(sound_duration / duration)
-        animation.sound_track = sound_track
+        a.sound_track = sound_track
     end
 
-    function animation.draw(self, x, y, scale_x, scale_y)
+    function a.draw(self, x, y, scale_x, scale_y)
         local sprite_n = math.floor(self.current_time / self.duration * #self.quads) + 1
 
         if sprite_n > self.quad_n then
@@ -84,10 +84,11 @@ local new_animation = function(
         )
     end
 
-    function animation.update(self, dt)
+    function a.update(self, dt)
         if not self.started then
             return
         end
+
         self.current_time = self.current_time + dt
         if self.current_time >= self.duration and self.repeatable then
             self.current_time = self.current_time - self.duration
@@ -99,11 +100,11 @@ local new_animation = function(
         end
     end
 
-    function animation.start(self)
+    function a.start(self)
         self.started = true
     end
 
-    return animation
+    return a
 end
 
 M.new_animation = new_animation
