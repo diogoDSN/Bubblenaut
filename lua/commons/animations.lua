@@ -59,7 +59,7 @@ local new_animation = function(
     animation.sound_track = sound_track
 
     function animation.draw(self, x, y)
-        local sprite_n = math.floor(self.current_time / self.duration * 3) + 1
+        local sprite_n = math.floor(self.current_time / self.duration * #self.quads) + 1
 
         if sprite_n > self.quad_n then
             sprite_n = self.quad_n
