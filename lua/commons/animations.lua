@@ -58,9 +58,11 @@ local new_animation = function(
     animation.started = pre_started
     animation.repeatable = repeatable
 
-    local sound_duration = sound_track:getDuration("seconds")
-    sound_track:setPitch(sound_duration / duration)
-    animation.sound_track = sound_track
+    if sound_track ~= nil then
+        local sound_duration = sound_track:getDuration("seconds")
+        sound_track:setPitch(sound_duration / duration)
+        animation.sound_track = sound_track
+    end
 
     function animation.draw(self, x, y, scale_x, scale_y)
         local sprite_n = math.floor(self.current_time / self.duration * #self.quads) + 1
@@ -68,8 +70,9 @@ local new_animation = function(
         if sprite_n > self.quad_n then
             sprite_n = self.quad_n
         end
-        
-        love.graphics.draw(self.sprite_sheet, self.quads[sprite_n], x or pos_x, y or pos_y, 0, scale_x, scale_y, pivot_x, pivot_y)
+
+        love.graphics.draw(self.sprite_sheet, self.quads[sprite_n], x or pos_x, y or pos_y, 0, scale_x, scale_y, pivot_x,
+            pivot_y)
     end
 
     function animation.update(self, dt)
@@ -81,7 +84,7 @@ local new_animation = function(
             self.current_time = self.current_time - self.duration
         end
 
-        if not self.sound_track:isPlaying() and not self.played then
+        if sound_track ~= nil and not self.sound_track:isPlaying() and not self.played then
             love.audio.play(self.sound_track)
             self.played = true
         end

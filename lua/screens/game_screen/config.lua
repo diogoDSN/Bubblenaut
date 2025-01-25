@@ -14,14 +14,16 @@ M.steps = {
     max_step = 200,
     min_step = 10,
     animation_step = 10,
+    scroll_ratio = 1.5, -- scroll distance per second compared to bubble size
 }
 
 M.sizes = {
     initial_radius = 52,
     expansion_factor = 1.05,
-    shrink_factor = 0.95,
     max_radius = 100,
     min_radius = 10,
 }
+
+M.sizes.shrink_factor = 1 / M.sizes.expansion_factor
 
 return M
