@@ -1,7 +1,16 @@
+local router = require("lua.commons.router")
+
 local M = {}
+
+local beamer
 
 M.load = function()
     print("Win screen loaded")
+
+    beamer = router.new_beamer(
+        "menu_screen",
+        0.2
+    )
 end
 
 M.draw = function()
@@ -14,7 +23,12 @@ end
 
 M.update = function(dt)
     if love.keyboard.isDown("space") then
-        return "menu_screen"
+        beamer:activate()
+    end
+
+    local next_screen = beamer:update(dt)
+    if next_screen ~= nil then
+        return next_screen
     end
 
     return nil
