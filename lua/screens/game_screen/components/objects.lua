@@ -55,7 +55,6 @@ M.update_bubble_animation = function(dt)
     M.bubble_animation:update(dt)
 end
 
-M.spike_radius = 50
 M.draw_obstacles = function()
     for _, spike in ipairs(M.obstacles) do
         love.graphics.draw(
@@ -72,6 +71,7 @@ local bubble_y_offset = conf.gameHeight / 5
 
 M.setupGame = function()
     M.bubble.sprite = love.graphics.newImage("archive/bubble_sprites.png")
+	M.spike_radius = 50
 	M.spike_sprite = love.graphics.newImage("archive/spike.png")
 	M.spike_scale_factor = 2 * M.spike_radius / M.spike_sprite:getWidth()
 	M.spike_pivot_x = M.spike_sprite:getWidth() / 2
