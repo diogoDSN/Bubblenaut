@@ -9,9 +9,13 @@ brew install lua
 brew install love
 ```
 
-## Run the Game
+## Running the Game
 To run the game, execute the following command:
 
 ```bash
 love .
 ```
+
+## Assets
+The assets used in this game are stored in the `archive` directory. The game assets have a resolution of 128x128.
+The background has a width of 540.
