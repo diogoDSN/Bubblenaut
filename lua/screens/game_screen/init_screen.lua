@@ -1,5 +1,6 @@
 local movement = require("lua.screens.game_screen.components.movement.movement")
 local objects = require("lua.screens.game_screen.components.objects")
+local colisions = require("lua.screens.game_screen.components.colisions")
 local graphics = require("lua.screens.game_screen.components.graphics")
 local background = require("lua.screens.game_screen.components.background")
 local sounds = require("lua.screens.game_screen.components.sounds")
@@ -21,6 +22,10 @@ M.update = function(dt)
     sounds.update()
 
     objects.update_bubble_animation(dt)
+
+	if colisions.applyColisions() then
+		objects.game_state = "game_over_screen"
+	end
 
     if objects.game_state == "" then
         return nil
