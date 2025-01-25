@@ -18,7 +18,7 @@ local scroll_speed = 100 -- pixels per second
 local scroll_ratio = 1.5 -- scroll distance per second compared to bubble size
 
 M.on_move_left_key_press = function()
-    if not M.bubble_movement.sideways_movement_locked then
+    if not objects.bubble.sideways_movement_locked then
         local animation_step = configs.steps.animation_step
         local starting_position = objects.bubble.center_x
         local final_position = objects.bubble.center_x - objects.bubble.step
@@ -35,13 +35,13 @@ M.on_move_left_key_press = function()
         end
 
         if #M.bubble_movement.positions > 0 then
-            M.bubble_movement.sideways_movement_locked = true
+            objects.bubble.sideways_movement_locked = true
         end
     end
 end
 
 M.on_move_right_key_press = function()
-    if not M.bubble_movement.sideways_movement_locked then
+    if not objects.bubble.sideways_movement_locked then
         local animation_step = configs.steps.animation_step
         local starting_position = objects.bubble.center_x
         local final_position = objects.bubble.center_x + objects.bubble.step
@@ -58,7 +58,7 @@ M.on_move_right_key_press = function()
         end
 
         if #M.bubble_movement.positions > 0 then
-            M.bubble_movement.sideways_movement_locked = true
+            objects.bubble.sideways_movement_locked = true
         end
     end
 end
@@ -72,7 +72,7 @@ M.handle_movement = function(dt)
     end
 
     if #M.bubble_movement.positions == 0 then
-        M.bubble_movement.sideways_movement_locked = false
+        objects.bubble.sideways_movement_locked = false
     end
 
     if love.keyboard.isDown(configs.controls.grow_key) then
