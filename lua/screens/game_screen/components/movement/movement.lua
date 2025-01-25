@@ -19,53 +19,53 @@ local scroll_ratio = 1.5 -- scroll distance per second compared to bubble size
 
 local debug_prints = false
 
-function love.keypressed(key)
-    if key == configs.controls.move_left_key then
-        if not M.bubble_movement.sideways_movement_locked then
-            local animation_step = configs.steps.animation_step
-            local starting_position = objects.bubble.center_x
-            local final_position = objects.bubble.center_x - objects.bubble.step
-            for i = 1, animation_step do
-                local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
-                local can_move_left = utils.bubble_can_move(objects.bubble, { x = new_x, y = objects.bubble.center_y })
+M.on_move_left_key_press = function()
+    if not M.bubble_movement.sideways_movement_locked then
+        local animation_step = configs.steps.animation_step
+        local starting_position = objects.bubble.center_x
+        local final_position = objects.bubble.center_x - objects.bubble.step
+        for i = 1, animation_step do
+            local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
+            local can_move_left = utils.bubble_can_move(objects.bubble, { x = new_x, y = objects.bubble.center_y })
 
-                if can_move_left then
-                    table.insert(M.bubble_movement.positions, {
-                        x = starting_position + (i / animation_step) * (final_position - starting_position),
-                        y = objects.bubble.center_y,
-                    })
-                end
-            end
-
-            if #M.bubble_movement.positions > 0 then
-                M.bubble_movement.sideways_movement_locked = true
+            if can_move_left then
+                table.insert(M.bubble_movement.positions, {
+                    x = starting_position + (i / animation_step) * (final_position - starting_position),
+                    y = objects.bubble.center_y,
+                })
             end
         end
-    end
 
-    if key == configs.controls.move_right_key then
-        if not M.bubble_movement.sideways_movement_locked then
-            local animation_step = configs.steps.animation_step
-            local starting_position = objects.bubble.center_x
-            local final_position = objects.bubble.center_x + objects.bubble.step
-            for i = 1, animation_step do
-                local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
-                local can_move = utils.bubble_can_move(objects.bubble, { x = new_x, y = objects.bubble.center_y })
-
-                if can_move then
-                    table.insert(M.bubble_movement.positions, {
-                        x = new_x,
-                        y = objects.bubble.center_y,
-                    })
-                end
-            end
-
-            if #M.bubble_movement.positions > 0 then
-                M.bubble_movement.sideways_movement_locked = true
-            end
+        if #M.bubble_movement.positions > 0 then
+            M.bubble_movement.sideways_movement_locked = true
         end
     end
 end
+
+M.on_move_right_key_press = function()
+    if not M.bubble_movement.sideways_movement_locked then
+        local animation_step = configs.steps.animation_step
+        local starting_position = objects.bubble.center_x
+        local final_position = objects.bubble.center_x + objects.bubble.step
+        for i = 1, animation_step do
+            local new_x = starting_position + (i / animation_step) * (final_position - starting_position)
+            local can_move = utils.bubble_can_move(objects.bubble, { x = new_x, y = objects.bubble.center_y })
+
+            if can_move then
+                table.insert(M.bubble_movement.positions, {
+                    x = new_x,
+                    y = objects.bubble.center_y,
+                })
+            end
+        end
+
+        if #M.bubble_movement.positions > 0 then
+            M.bubble_movement.sideways_movement_locked = true
+        end
+    end
+end
+
+
 
 M.handle_movement = function(dt)
     if debug_prints then
