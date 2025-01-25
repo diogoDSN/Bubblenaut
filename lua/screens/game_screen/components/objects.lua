@@ -8,24 +8,17 @@ local M = {}
 M.bubble = {
     center_x = 0,
     center_y = 0,
-    inner_radius = 0,
-    outer_radius = 0,
+    radius = 0,
     step = 0,
 }
-
-function M.bubble:get_outer_line_width()
-    return 2 * (self.outer_radius - self.inner_radius)
-end
 
 function M.bubble.grow(self)
     local expansion_factor = configs.sizes.expansion_factor
     local step_increase_factor = configs.steps.step_increase_factor
 
-    local new_inner_radius = self.inner_radius * expansion_factor
-    local new_outer_radius = self.outer_radius * expansion_factor
+    local new_radius = self.radius * expansion_factor
 
-    self.inner_radius = new_inner_radius
-    self.outer_radius = new_outer_radius
+    self.radius = new_radius
 
     self.step = self.step * step_increase_factor
 end
@@ -34,11 +27,9 @@ function M.bubble.shrink(self)
     local shrink_factor = configs.sizes.shrink_factor
     local step_reduction_factor = configs.steps.step_reduction_factor
 
-    local new_inner_radius = self.inner_radius * shrink_factor
-    local new_outer_radius = self.outer_radius * shrink_factor
+    local new_radius = self.radius * shrink_factor
 
-    self.inner_radius = new_inner_radius
-    self.outer_radius = new_outer_radius
+    self.radius = new_radius
 
     self.step = self.step * step_reduction_factor
 end
@@ -52,7 +43,7 @@ end
 M.draw_bubble = function()
     local bubble_sprite_height = M.bubble.sprite:getHeight()
 
-    local scale_factor = (M.bubble.outer_radius / bubble_sprite_height) * 2
+    local scale_factor = (M.bubble.radius / bubble_sprite_height) * 2
 
     M.bubble_animation:draw(
         M.bubble.center_x, M.bubble.center_y, -- position
@@ -64,6 +55,27 @@ M.update_bubble_animation = function(dt)
 	M.bubble_animation:update(dt)
 end
 
+local spike_radius = 50
+local spike_sprite = love.graphics.newImage("archive/spike.png")
+local spike_scale_factor = 2 * spike_radius / spike_sprite:getWidth()
+local spike_pivot_x = spike_sprite:getWidth() / 2
+local spike_pivot_y = spike_sprite:getHeight() / 2
+
+M.draw_obstacles = function()
+    for _, spike in ipairs(M.obstacles) do
+        spike_center_x = spike[1]
+        spike_center_y = M.bubble.center_y - (spike[2] - M.y_position)
+
+        love.graphics.draw(
+            spike_sprite,                   -- sprite
+            spike_center_x, spike_center_y, -- position
+            0,                              -- rotation
+            scale_factor, scale_factor,     -- scaling
+            spike_pivot_x, spike_pivot_y    -- pivot
+        )
+    end
+end
+
 local bubble_y_offset = conf.gameHeight / 3
 
 M.setupGame = function()
@@ -71,8 +83,7 @@ M.setupGame = function()
 
     M.bubble.center_x = conf.gameWidth / 2
     M.bubble.center_y = conf.gameHeight / 2 + bubble_y_offset
-    M.bubble.inner_radius = 50
-    M.bubble.outer_radius = 52
+    M.bubble.radius = 52
     M.bubble.step = 50
 
 	local bubble_sprite_height = M.bubble.sprite:getHeight()
@@ -90,27 +101,15 @@ M.setupGame = function()
 		sounds.game_over                                      -- sound
 	)
 
-    M.spike = {
-        center_x = 800,
-        center_y = 200,
-        inner_radius = 50,
-        outer_radius = 52,
-        step = 50,
-        fill_color = { 1, 0, 0, 0.5 },
-        line_color = { 1, 0, 0 },
+    M.obstacles = {
+        -- {x, y} coordinates relative to the whole level
+        { 200, 500 },
+        { 800, 1000 },
+        { 400, 1500 }
     }
+
+    M.y_position = 0
 end
 
-
-
-M.spike = {
-    center_x = 800,
-    center_y = 200,
-    inner_radius = 50,
-    outer_radius = 52,
-    step = 50,
-    fill_color = { 1, 0, 0, 0.5 },
-    line_color = { 1, 0, 0 },
-}
 
 return M

@@ -16,11 +16,6 @@ end
 
 M.draw = function()
     love.graphics.draw(M.background, 0, 0)
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.setFont(love.graphics.newFont(40))
-    love.graphics.printf("Welcome to", 0, conf.gameHeight / 8, conf.gameWidth, "center")
-    love.graphics.printf("Bubblenaut", 0, conf.gameHeight / 4, conf.gameWidth, "center")
-    love.graphics.printf("Press SPACE to Start :)", 0, conf.gameHeight / 2, conf.gameWidth, "center")
 end
 
 
