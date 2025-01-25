@@ -6,6 +6,7 @@ local beamer
 
 M.load = function()
     print("Win screen loaded")
+    M.background = love.graphics.newImage("archive/win-background.png")
 
     beamer = router.new_beamer(
         "menu_screen",
@@ -14,10 +15,7 @@ M.load = function()
 end
 
 M.draw = function()
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.setFont(love.graphics.newFont(40))
-    love.graphics.print("You win!", 100, 100)
-    love.graphics.print("Press space to return to the menu", 100, 200)
+    love.graphics.draw(M.background, 0, 0)
 end
 
 
