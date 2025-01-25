@@ -1,4 +1,4 @@
-local sounds = require("lua.screens.game_over_screen.sounds")
+local sounds = require("lua.commons.sound_sources")
 local animations = require("lua.commons.animations")
 local router = require("lua.commons.router")
 local conf = require("conf")

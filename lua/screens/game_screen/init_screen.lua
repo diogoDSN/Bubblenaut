@@ -6,6 +6,8 @@ local background = require("lua.screens.game_screen.components.background")
 local sounds = require("lua.screens.game_screen.components.sounds")
 local conf = require "conf"
 local configs = require("lua.screens.game_screen.config")
+local animations = require("lua.commons.animations")
+local router = require("lua.commons.router")
 
 local M = {}
 
@@ -15,6 +17,25 @@ M.load = function()
 
     objects.setupGame()
     background.setup_background()
+
+    M.pop_animation = animations.new_animation(
+        love.graphics.newImage("archive/bubble_pop.png"),
+        128,
+        128,
+        200,
+        200,
+        0.2,
+        1,
+        1,
+        false,
+        false,
+        sounds.pop_cut
+    )
+
+    M.beamer = router.new_beamer(
+        "game_over_screen",
+        0.2
+    )
 end
 
 -- function to run when love updates the game state, runs before drawing
@@ -29,10 +50,13 @@ M.update = function(dt)
         objects.game_state = "game_over_screen"
     end
 
-    if objects.game_state == "" then
-        return nil
-    else
-        return objects.game_state
+    if objects.game_state ~= "" then
+        M.beamer:activate(objects.game_state)
+    end
+
+    local next_screen = M.beamer:update(dt)
+    if next_screen ~= nil then
+        return next_screen
     end
 end
 
