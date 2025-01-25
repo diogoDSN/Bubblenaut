@@ -14,6 +14,7 @@ M.steps = {
     max_step = 200,
     min_step = 10,
     animation_step = 10,
+    scroll_ratio = 1.5, -- scroll distance per second compared to bubble size
 }
 
 M.sizes = {

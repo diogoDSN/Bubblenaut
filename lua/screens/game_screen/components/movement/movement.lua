@@ -2,6 +2,7 @@ local configs = require("lua.screens.game_screen.config")
 local objects = require("lua.screens.game_screen.components.objects")
 local sounds = require("lua.screens.game_screen.components.sounds")
 local utils = require("lua.screens.game_screen.components.movement.utils")
+local background = require("lua.screens.game_screen.components.background")
 
 local M = {}
 
@@ -13,9 +14,6 @@ M.bubble_movement = {
     sideways_movement_locked = false,
     positions = {},
 }
-
-local scroll_speed = 100 -- pixels per second
-local scroll_ratio = 1.5 -- scroll distance per second compared to bubble size
 
 M.on_move_left_key_press = function()
     if not M.bubble_movement.sideways_movement_locked then
@@ -79,6 +77,8 @@ M.handle_movement = function(dt)
         local new_bubble_boundary_circle = utils.expanded_bubble_boundary_circle(objects.bubble)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:grow()
+            -- we should add the ratio as a config
+            background.set_speed(background.get_speed() * 1.05)
         end
     end
 
@@ -86,6 +86,7 @@ M.handle_movement = function(dt)
         local new_bubble_boundary_circle = utils.shrunken_bubble_boundary_circle(objects.bubble)
         if utils.circle_inside_screen(new_bubble_boundary_circle) then
             objects.bubble:shrink()
+            background.set_speed(background.get_speed() / 1.05)
         end
     end
 
@@ -101,7 +102,7 @@ M.handle_movement = function(dt)
         configs.steps.max_step
     )
 
-    scroll_speed = objects.bubble.radius * scroll_ratio
+    local scroll_speed = objects.bubble.radius * configs.steps.scroll_ratio
 
     for _, spike in ipairs(objects.obstacles) do
         spike[2] = spike[2] + scroll_speed * dt
