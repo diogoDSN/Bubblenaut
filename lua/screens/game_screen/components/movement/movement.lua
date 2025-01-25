@@ -6,10 +6,6 @@ local background = require("lua.screens.game_screen.components.background")
 
 local M = {}
 
-M.game_state = {
-    running = true,
-}
-
 M.bubble_movement = {
     sideways_movement_locked = false,
     positions = {},
@@ -106,6 +102,11 @@ M.handle_movement = function(dt)
 
     for _, spike in ipairs(objects.obstacles) do
         spike[2] = spike[2] + scroll_speed * dt
+    end
+
+    objects.finish_line = objects.finish_line + scroll_speed * dt
+    if (objects.finish_line >= objects.bubble.center_y) then
+        objects.game_state = "win_screen"
     end
 end
 
