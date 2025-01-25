@@ -1,6 +1,6 @@
 local M = {}
 
-M.swoosh = love.audio.newSource("archive/sounds/swoosh.wav", "static")
+M.swoosh = love.audio.newSource("archive/sounds/swosh.wav", "static")
 M.swoosh_deep = love.audio.newSource("archive/sounds/swosh_deep.wav", "static")
 
 M.inhale = love.audio.newSource("archive/sounds/inhale.wav", "static")

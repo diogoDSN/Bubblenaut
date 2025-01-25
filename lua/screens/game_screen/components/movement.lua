@@ -1,5 +1,6 @@
 local configs = require("lua.screens.game_screen.config")
 local objects = require("lua.screens.game_screen.components.objects")
+local sounds = require("lua.screens.game_screen.components.sounds")
 
 local M = {}
 
@@ -50,12 +51,31 @@ M.handle_movement = function(dt)
         objects.bubble.outer_radius = objects.bubble.outer_radius * expansion_factor
 
         objects.bubble.step = objects.bubble.step * step_increase_factor
+
+        if not sounds.inflating:isPlaying() then
+            love.audio.play(sounds.inflating)
+        end
+    else
+        if sounds.inflating:isPlaying() then
+            love.audio.pause(sounds.inflating)
+            sounds.inflating.seek(sounds.inflating, 0, "seconds")
+        end
     end
+
     if love.keyboard.isDown(configs.controls.shrink_key) then
         objects.bubble.inner_radius = objects.bubble.inner_radius * shrink_factor
         objects.bubble.outer_radius = objects.bubble.outer_radius * shrink_factor
 
         objects.bubble.step = objects.bubble.step * step_reduction_factor
+
+        if not sounds.deflating:isPlaying() then
+            love.audio.play(sounds.deflating)
+        end
+    else
+        if sounds.deflating:isPlaying() then
+            love.audio.pause(sounds.deflating)
+            sounds.inflating.seek(sounds.deflating, 0, "seconds")
+        end
     end
 
     objects.bubble.inner_radius = clamp(
