@@ -14,7 +14,7 @@ M.load = function()
 
     beamer = router.new_beamer(
         "game_screen",
-        0.2
+        0.3
     )
 
     game_over_sound = {
