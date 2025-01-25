@@ -1,5 +1,6 @@
 require "lua.draw"
 require "lua.update"
+require "lua.audio.mic"
 local state = require "lua.state"
 local push = require "push"
 
