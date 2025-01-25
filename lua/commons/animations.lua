@@ -71,8 +71,17 @@ local new_animation = function(
             sprite_n = self.quad_n
         end
 
-        love.graphics.draw(self.sprite_sheet, self.quads[sprite_n], x or pos_x, y or pos_y, 0, scale_x, scale_y, pivot_x,
-            pivot_y)
+        love.graphics.draw(
+            self.sprite_sheet,
+            self.quads[sprite_n],
+            x or pos_x,
+            y or pos_y,
+            0,
+            scale_x,
+            scale_y,
+            pivot_x,
+            pivot_y
+        )
     end
 
     function animation.update(self, dt)

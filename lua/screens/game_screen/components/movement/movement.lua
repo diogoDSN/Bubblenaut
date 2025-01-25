@@ -1,6 +1,5 @@
 local configs = require("lua.screens.game_screen.config")
 local objects = require("lua.screens.game_screen.components.objects")
-local sounds = require("lua.screens.game_screen.components.sounds")
 local utils = require("lua.screens.game_screen.components.movement.utils")
 
 local M = {}
