@@ -154,6 +154,9 @@ M.setupGame = function()
     M.finish_line_sprite = love.graphics.newImage("archive/fence.png")
     M.little_girl_sprite = love.graphics.newImage("archive/girl.png")
     M.little_girl.width = M.little_girl_sprite:getWidth()
+    M.little_girl.pos_y = conf.gameHeight - 10
+    M.little_girl.pos_x = conf.gameWidth / 2
+    M.little_girl.target_x = conf.gameWidth / 2
 
 
     M.bubble.center_x = conf.gameWidth / 2
