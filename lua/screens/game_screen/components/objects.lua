@@ -84,16 +84,26 @@ M.draw_obstacles = function()
     end
 end
 
+M.draw_finish_line = function()
+    love.graphics.draw(
+        M.finish_line_sprite,
+        0, M.finish_line
+    )
+end
+
 local bubble_y_offset = conf.gameHeight / 5
 
 M.setupGame = function()
     M.bubble.sprite = love.graphics.newImage("archive/bubble_sprites.png")
     M.spike_sprite = love.graphics.newImage("archive/spike.png")
-  
+
     M.spike_radius = conf.gameWidth / 14
     M.spike_scale_factor = 2 * M.spike_radius / M.spike_sprite:getWidth()
     M.spike_pivot_x = M.spike_sprite:getWidth() / 2
     M.spike_pivot_y = M.spike_sprite:getHeight() / 2
+
+    M.finish_line_sprite = love.graphics.newImage("archive/fence.png")
+
 
     M.bubble.center_x = conf.gameWidth / 2
     M.bubble.center_y = conf.gameHeight / 2 + bubble_y_offset
@@ -116,12 +126,12 @@ M.setupGame = function()
     )
 
     M.obstacles = {
-       -- {x, y} coordinates relative to the whole level
-       {1 * M.spike_radius, -M.spike_radius},
-       {13 * M.spike_radius, -5 * M.spike_radius},
-       {7 * M.spike_radius, -10 * M.spike_radius}
+        -- {x, y} coordinates relative to the whole level
+        { 1 * M.spike_radius,  -M.spike_radius },
+        { 13 * M.spike_radius, -5 * M.spike_radius },
+        { 7 * M.spike_radius,  -10 * M.spike_radius }
     }
-       
+
     M.finish_line = -20 * M.spike_radius
     M.game_state = ""
 end
