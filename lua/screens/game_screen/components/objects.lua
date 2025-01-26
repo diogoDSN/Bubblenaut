@@ -64,6 +64,18 @@ function M.bubble.move(self, position)
     self.center_y = position.y
 end
 
+M.level_name = ""
+M.draw_level = function()
+    local underscore_index = 1
+    for i = 1, string.len(M.level_name) do
+        if string.sub(M.level_name, i, i) == "_" then
+            underscore_index = i
+        end
+    end
+    local level_number = string.sub(M.level_name, underscore_index + 1, string.len(M.level_name))
+    love.graphics.print("Level: " .. level_number, 0, 0)
+end
+
 M.draw_bubble = function()
     local bubble_sprite_height = M.bubble.sprite:getHeight()
     local scale_factor = (M.bubble.radius / bubble_sprite_height) * 2
@@ -143,6 +155,8 @@ end
 local bubble_y_offset = conf.gameHeight / 5
 
 M.setupGame = function(level_name)
+    M.level_name = level_name
+
     M.bubble.sprite = love.graphics.newImage("archive/bubble_sprites.png")
     M.spike_sprite = love.graphics.newImage("archive/spike.png")
 

@@ -5,7 +5,10 @@ M.load_level = function(spike_radius)
         -- {x, y} coordinates in a grid of width 14, obstacles are 2 columns wide
         -- x is a number between 1 and 13, the obstacle will be in columns x and x+1
         -- y is a negative number
-        { 2,  6 },
+        {1, 6},
+        {3, 6},
+        {5, 6},
+        {7, 6},
         { 10, 0 },
         { 12, 0 },
         { 2,  -8 },
