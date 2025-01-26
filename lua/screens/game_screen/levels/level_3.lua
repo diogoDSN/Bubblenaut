@@ -11,9 +11,22 @@ M.load_level = function(spike_radius)
         { 2,  -8 },
         { 4,  -8 },
         { 6,  -8 },
+        { 1,  -20 },
+        { 13, -20 },
+        { 3,  -22 },
+        { 11, -22 },
+        { 5,  -24 },
+        { 9,  -24 },
+        { 7,  -34 },
+        { 5,  -36 },
+        { 7,  -36 },
+        { 9,  -36 },
         { 7,  -38 },
         { 1,  -46 },
+        { 3,  -46 },
+        { 5,  -46 },
         { 7,  -46 },
+        { 4,  -54 },
         { 7,  -54 },
         { 10, -54 },
         { 13, -54 },
@@ -29,9 +42,11 @@ M.load_level = function(spike_radius)
         { 2,  -78 },
         { 9,  -80 },
         { 5,  -82 },
+        { 12, -84 },
         { 10, -85 },
         { 3,  -87 },
         { 7,  -88 },
+        { 1,  -90 },
         { 12, -90 }
     }
 
@@ -40,11 +55,7 @@ M.load_level = function(spike_radius)
         spike[2] = spike[2] * spike_radius
     end
 
-    M.finish_line = -10 * spike_radius
+    M.finish_line = -95 * spike_radius
 end
-
-M.next_level = nil
-
-
 
 return M
