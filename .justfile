@@ -5,9 +5,9 @@ _default:
 [group('build')]
 build_mac:
 	mkdir -p build/mac
-	unzip bin/love2d_mac.zip -d build/mac/
+	unzip love_zips/love2d_mac.zip -d build/mac/
 	mv build/mac/love.app build/mac/Bubblenauts.app
-	zip -9 -r build/mac/Bubblenauts.app/Contents/Resources/Bubblenauts.love . -x 'build/**' '.git/**' 'bin/**'
+	zip -9 -r build/mac/Bubblenauts.app/Contents/Resources/Bubblenauts.love . -x 'build/**' '.git/**' 'love_zips/**'
 
 	xmlstarlet ed \
 		-u "/plist/dict/key[text()='CFBundleName']/following-sibling::string[1]" \
