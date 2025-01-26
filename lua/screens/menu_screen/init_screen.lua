@@ -54,6 +54,13 @@ M.draw = function()
         love.graphics.setFont(love.graphics.newFont(40))
         love.graphics.print("Menu screen", 10, 10)
     end
+
+    if configs.controls.single_player then
+        love.graphics.print("Single Player Mode: Active", 0, 0)
+    else
+        love.graphics.print("Single Player Mode: Inactive", 0, 0)
+    end
+    love.graphics.print("Press 'P' to change mode", 0, 20)
 end
 
 
