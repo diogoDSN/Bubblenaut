@@ -30,7 +30,7 @@ M.setScreen = function(screenName)
 	M.current_screen = newScreen
 end
 
-M.current_level = "level_1"
+M.current_level = "level_3"
 
 M.setCurrentLevel = function(level_name)
 	M.current_level = level_name

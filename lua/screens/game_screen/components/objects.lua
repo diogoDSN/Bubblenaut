@@ -161,22 +161,22 @@ M.setupGame = function(level_name)
 
     M.bubble.center_x = conf.gameWidth / 2
     M.bubble.center_y = conf.gameHeight / 2 + bubble_y_offset
-    M.bubble.radius = 52
-    M.bubble.step = 50
+    M.bubble.radius = configs.sizes.initial_radius
+    M.bubble.step = configs.steps.bubble_step
 
     local bubble_sprite_height = M.bubble.sprite:getHeight()
     local center_x = bubble_sprite_height / 2
     local center_y = bubble_sprite_height / 2
 
     M.bubble_animation = animations.new_animation(
-        M.bubble.sprite,                      -- sprite
-        128, 128,                             -- sprite size
-        M.bubble.center_x, M.bubble.center_y, -- position
-        center_x, center_y,                   -- pivot
-        0.5,                                  -- duration
-        true,                                 -- started
-        true,                                 -- repeatable
-        nil                                   -- sound
+        M.bubble.sprite,                            -- sprite
+        bubble_sprite_height, bubble_sprite_height, -- sprite size
+        M.bubble.center_x, M.bubble.center_y,       -- position
+        center_x, center_y,                         -- pivot
+        0.5,                                        -- duration
+        true,                                       -- started
+        true,                                       -- repeatable
+        nil                                         -- sound
     )
 
     M.pop_animation = animations.new_animation(
@@ -190,11 +190,11 @@ M.setupGame = function(level_name)
         sound_sources.pop_cut                 -- sound
     )
 
-	local level = require("lua.screens.game_screen.levels." .. level_name)
-	level.load_level(M.spike_radius)
+    local level = require("lua.screens.game_screen.levels." .. level_name)
+    level.load_level(M.spike_radius)
 
-	M.obstacles = level.obstacles
-	M.finish_line = level.finish_line
+    M.obstacles = level.obstacles
+    M.finish_line = level.finish_line
 
     M.game_state = ""
 end
