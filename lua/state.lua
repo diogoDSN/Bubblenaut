@@ -1,4 +1,5 @@
 local M = {}
+local conf = require("conf")
 
 M.screens = {
 	menu_screen = require("lua.screens.menu_screen.init_screen"),
@@ -11,18 +12,26 @@ M.current_screen = M.screens.menu_screen
 
 local NilScreen = {
 	load = function()
-		print "The NilScreen has no load function."
+        if conf.debug then
+            print("The NilScreen has no load function.")
+        end
 	end,
 	draw = function()
-		print "The NilScreen has no draw function."
+        if conf.debug then
+            print("The NilScreen has no draw function.")
+        end
 	end,
 	update = function(dt)
-		print "The NilScreen has no update function."
+        if conf.debug then
+            print("The NilScreen has no update function.")
+        end
 	end,
 }
 
 M.setScreen = function(screenName)
-	print(screenName)
+    if conf.debug then
+        print("Setting screen to " .. screenName)
+    end
 	local newScreen = M.screens[screenName]
 	if newScreen == nil then
 		newScreen = NilScreen

@@ -3,14 +3,23 @@ local animations = require("lua.commons.animations")
 local router = require("lua.commons.router")
 local conf = require("conf")
 
+local beamer
+
 local M = {}
 
+local buttons = {}
+
+local screen_name = "Game Over"
+
 local game_over_sound
-local beamer
 local pop_animation
 
 M.load = function()
-    print("Game over screen loaded")
+    if conf.debug then
+        print(screen_name .. " Screen loaded")
+    end
+
+    M.background = love.graphics.newImage("archive/game-over-background.png")
 
     beamer = router.new_beamer(
         "game_screen",
@@ -35,19 +44,64 @@ M.load = function()
     )
 end
 
+local function newButton(id, x, y, width, height, onClick)
+    return {
+        id = id,
+        x = x,
+        y = y,
+        width = width,
+        height = height,
+        onClick = onClick
+    }
+end
+
+table.insert(buttons, newButton("play", 144, 413, 219, 84, function()
+    if conf.debug then
+        print("Play button clicked")
+    end
+    beamer:activate()
+    pop_animation:start()
+end))
+
+table.insert(buttons, newButton("quit", 144, 517, 219, 84, function()
+    if conf.debug then
+        print("Quit button clicked")
+    end
+    beamer:activate("menu_screen")
+end))
 
 M.draw = function()
-    love.graphics.setColor(1, 1, 1, 1)
-    love.graphics.setFont(love.graphics.newFont(40))
-    love.graphics.printf("Game Over :(", 0, conf.gameHeight / 8, conf.gameWidth, "center")
-    love.graphics.printf("Press SPACE to try again", 0, conf.gameHeight / 2, conf.gameWidth, "center")
-
-
-    pop_animation:draw()
+    love.graphics.draw(M.background, 0, 0)
+    if conf.debug then
+        for _, btn in ipairs(buttons) do
+            love.graphics.rectangle("line", btn.x, btn.y, btn.width, btn.height)
+        end
+        love.graphics.setColor(1, 1, 1, 1)
+        love.graphics.setFont(love.graphics.newFont(40))
+        love.graphics.print(screen_name, 10, 10)
+    end
 end
 
 
 M.update = function(dt)
+    if conf.debug then
+        local x, y = love.mouse.getPosition()
+        x = x * conf.gameWidth / love.graphics.getWidth()
+        y = y * conf.gameHeight / love.graphics.getHeight()
+        print(x, y)
+    end
+
+    if love.mouse.isDown(1) then
+        local x, y = love.mouse.getPosition()
+        x = x * conf.gameWidth / love.graphics.getWidth()
+        y = y * conf.gameHeight / love.graphics.getHeight()
+        for _, btn in ipairs(buttons) do
+            if x > btn.x and x < btn.x + btn.width and y > btn.y and y < btn.y + btn.height then
+                btn.onClick()
+            end
+        end
+    end
+
     if love.keyboard.isDown("space") then
         beamer:activate()
         pop_animation:start()

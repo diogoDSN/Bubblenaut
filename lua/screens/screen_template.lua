@@ -1,16 +1,23 @@
 local M = {}
+local conf = require("conf")
 
 M.load = function()
-    print "This screen has no load function."
+    if conf.debug then
+        print "This screen has no load function."
+    end
 end
 
 M.draw = function()
-    print "This screen has no draw function."
+    if conf.debug then
+        print "This screen has no draw function."
+    end
 end
 
 -- Update functions should return a new screen in case we change screen
 M.update = function(dt)
-    print "This screen has no update function."
+    if conf.debug then
+        print "This screen has no update function."
+    end
     return nil
 end
 
