@@ -35,6 +35,16 @@ This is handled by the `push` library. The game is designed to run at a resoluti
 Dependencies:
 * `xmlstarlet`
 
+Install the dependencies on your system:
+```sh
+brew install xmlstarlet
+brew install just
+```
+or
+```sh
+sudo apt-get install xmlstarlet
+```
+
 To build a game for all systems use just with the target:
 ```sh
 just build
