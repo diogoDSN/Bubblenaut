@@ -39,11 +39,12 @@ M.load_level = function(spike_radius)
     }
 
     for _, spike in ipairs(M.obstacles) do
+        spike[2] = spike[2] + 34
         spike[1] = spike[1] * spike_radius
         spike[2] = spike[2] * spike_radius
     end
 
-    M.finish_line = -95 * spike_radius
+    M.finish_line = -95 * spike_radius + 34
 end
 
 M.next_level = nil
