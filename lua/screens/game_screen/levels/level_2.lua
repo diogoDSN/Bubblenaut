@@ -43,7 +43,7 @@ M.load_level = function(spike_radius)
     M.finish_line = -10 * spike_radius
 end
 
-M.next_level = "level_3"
+M.next_level = nil
 
 
 
