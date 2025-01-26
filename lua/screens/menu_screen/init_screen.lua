@@ -1,5 +1,6 @@
 local router = require("lua.commons.router")
 local conf = require "conf"
+local configs = require("lua.screens.game_screen.config")
 
 local M = {}
 local buttons = {}
@@ -64,6 +65,7 @@ M.update = function(dt)
         print(x, y)
     end
 
+
     if love.keyboard.isDown("space") then
         beamer:activate()
     end
@@ -84,6 +86,23 @@ M.update = function(dt)
     end
 
     return beamer:update(dt)
+end
+
+M.keypressed = function(key)
+    if key == "p" then
+        configs.controls.single_player = not configs.controls.single_player
+        if configs.controls.single_player then
+            configs.controls.move_left_key = "left"
+            configs.controls.move_right_key = "right"
+            configs.controls.grow_key = "up"
+            configs.controls.shrink_key = "down"
+        else
+            configs.controls.move_left_key = "lshift"
+            configs.controls.move_right_key = "space"
+            configs.controls.grow_key = "return"
+            configs.controls.shrink_key = "down"
+        end
+    end
 end
 
 return M
