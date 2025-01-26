@@ -12,6 +12,8 @@ push:setupScreen(conf.gameWidth, conf.gameHeight, windowWidth, windowHeight, {fu
 
 math.randomseed(os.time())
 
+love.window.setIcon(love.image.newImageData('archive/icon.png'))
+
 function love.load()
     state.current_screen.load()
 end
