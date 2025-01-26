@@ -23,10 +23,21 @@ build_mac:
 		-d "/plist/dict/key[text()='UTExportedTypeDeclarations']" \
 		build/mac/Bubblenauts.app/Contents/Info.plist
 
+# Build game for windows
+[group('build')]
+build_windows:
+	mkdir -p build/windows
+	unzip love_zips/love2d_win32.zip -d build/windows/
+	zip -9 -r build/windows/Bubblenauts.love . -x 'build/**' '.git/**' 'love_zips/**'
+	cat build/windows/love-11.5-win32/love.exe build/windows/Bubblenauts.love > build/windows/Bubblenauts.exe
+	rm -r build/windows/Bubblenauts.love build/windows/love-11.5-win32
+
+
+
 
 # Build game for all of our targets
 [group('build')]
-build: build_mac
+build: build_mac build_windows
 	echo "Finishede building for all systems."
 
 
