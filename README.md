@@ -32,7 +32,10 @@ This is handled by the `push` library. The game is designed to run at a resoluti
 
 ## Building
 
-Install xmlstarlet on your system:
+Dependencies:
+* `xmlstarlet`
+
+Install the dependencies on your system:
 ```sh
 brew install xmlstarlet
 brew install just
@@ -47,7 +50,8 @@ To build a game for all systems use just with the target:
 just build
 ```
 This will create:
-* A MacOs app in `build/mac/Bubblenauts.app`
+* A MacOs app in `build/mac/Bubblenauts.app`;
+* A zip file in `build/windows/Bubblenauts.zip` which has an executable for windows;
 
 ## Playing the Game
 Use `Space` to proceed through menus. During the game, use these controls:
