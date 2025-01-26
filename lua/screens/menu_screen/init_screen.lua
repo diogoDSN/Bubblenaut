@@ -8,7 +8,9 @@ local buttons = {}
 local beamer
 
 M.load = function()
-    print("Menu screen loaded")
+    if conf.debug then
+        print("Menu screen loaded")
+    end
 
     beamer = router.new_beamer(
         "game_screen",
@@ -55,6 +57,7 @@ M.draw = function()
         love.graphics.print("Menu screen", 10, 10)
     end
 
+    love.graphics.setFont(love.graphics.newFont(20))
     if configs.controls.single_player then
         love.graphics.print("Single Player Mode: Active", 0, 0)
     else

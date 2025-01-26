@@ -11,7 +11,9 @@ local M = {}
 
 -- runs once when opening the game screen
 M.load = function(level_name)
-    print("Game screen loaded")
+    if conf.debug then
+        print("Game screen loaded")
+    end
     objects.setupGame(level_name)
     background.setup_background()
 

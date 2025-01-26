@@ -1,13 +1,18 @@
 local router = require("lua.commons.router")
 local conf = require("conf")
 
-local M = {}
-local buttons = {}
-
 local beamer
 
+local M = {}
+
+local buttons = {}
+
 M.load = function(level_name)
-    print("Win screen loaded")
+    if conf.debug then
+        print("Win screen loaded")
+    end
+
+    M.background = love.graphics.newImage("archive/win-background.png")
 
 	local level = require("lua.screens.game_screen.levels." .. level_name)
 	if level.next_level ~= nil then
@@ -22,8 +27,6 @@ M.load = function(level_name)
 			0.2
 		)
 	end
-
-    M.background = love.graphics.newImage("archive/win-background.png")
 end
 
 local function newButton(id, x, y, width, height, onClick)

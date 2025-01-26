@@ -1,9 +1,8 @@
 local state = require("lua.state")
-
-local debug_prints = false
+local conf = require("conf")
 
 function love.update(dt)
-    if debug_prints then
+    if conf.debug_fps then
         print(1 / dt, "fps")
     end
 

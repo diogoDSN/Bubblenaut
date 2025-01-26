@@ -7,6 +7,7 @@ local conf = {
     gameHeight = 640,
     --fixed game resolution
     debug = false,
+    debug_fps = false,
 }
 
 return conf
