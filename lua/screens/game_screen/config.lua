@@ -3,6 +3,7 @@ local conf = require("conf")
 local M = {}
 
 M.controls = {
+    single_player = false,
     move_left_key = "lshift",
     move_right_key = "space",
     grow_key = "return",

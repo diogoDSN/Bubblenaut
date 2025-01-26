@@ -1,5 +1,6 @@
 local router = require("lua.commons.router")
 local conf = require "conf"
+local configs = require("lua.screens.game_screen.config")
 
 local M = {}
 local buttons = {}
@@ -53,6 +54,13 @@ M.draw = function()
         love.graphics.setFont(love.graphics.newFont(40))
         love.graphics.print("Menu screen", 10, 10)
     end
+
+    if configs.controls.single_player then
+        love.graphics.print("Single Player Mode: Active", 0, 0)
+    else
+        love.graphics.print("Single Player Mode: Inactive", 0, 0)
+    end
+    love.graphics.print("Press 'P' to change mode", 0, 20)
 end
 
 
@@ -63,6 +71,7 @@ M.update = function(dt)
         y = y * conf.gameHeight / love.graphics.getHeight()
         print(x, y)
     end
+
 
     if love.keyboard.isDown("space") then
         beamer:activate()
@@ -84,6 +93,23 @@ M.update = function(dt)
     end
 
     return beamer:update(dt)
+end
+
+M.keypressed = function(key)
+    if key == "p" then
+        configs.controls.single_player = not configs.controls.single_player
+        if configs.controls.single_player then
+            configs.controls.move_left_key = "left"
+            configs.controls.move_right_key = "right"
+            configs.controls.grow_key = "up"
+            configs.controls.shrink_key = "down"
+        else
+            configs.controls.move_left_key = "lshift"
+            configs.controls.move_right_key = "space"
+            configs.controls.grow_key = "return"
+            configs.controls.shrink_key = "down"
+        end
+    end
 end
 
 return M
