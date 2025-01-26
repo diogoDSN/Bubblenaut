@@ -3,9 +3,9 @@ local conf = require("conf")
 local M = {}
 
 M.controls = {
-    move_left_key = "left",
-    move_right_key = "right",
-    grow_key = "up",
+    move_left_key = "lshift",
+    move_right_key = "space",
+    grow_key = "return",
     shrink_key = "down",
 }
 
