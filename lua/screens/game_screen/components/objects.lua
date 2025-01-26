@@ -20,6 +20,16 @@ M.little_girl = {
     target_x = conf.gameWidth / 2,
 }
 
+function M.bubble.growExpFactor(self, expansion_factor)
+    local step_increase_factor = configs.steps.step_increase_factor
+
+    local new_radius = self.radius * expansion_factor
+
+    self.radius = new_radius
+
+    self.step = self.step * step_increase_factor
+end
+
 function M.bubble.grow(self)
     local expansion_factor = configs.sizes.expansion_factor
     local step_increase_factor = configs.steps.step_increase_factor

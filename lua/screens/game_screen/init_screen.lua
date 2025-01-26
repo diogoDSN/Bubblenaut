@@ -2,6 +2,8 @@ local movement = require("lua.screens.game_screen.components.movement.movement")
 local objects = require("lua.screens.game_screen.components.objects")
 local colisions = require("lua.screens.game_screen.components.colisions")
 local background = require("lua.screens.game_screen.components.background")
+local utils = require("lua.screens.game_screen.components.movement.utils")
+require("lua.audio.mic")
 local sounds = require("lua.screens.game_screen.components.sounds")
 local conf = require "conf"
 local configs = require("lua.screens.game_screen.config")
@@ -12,6 +14,11 @@ local M = {}
 -- runs once when opening the game screen
 M.load = function(level_name)
     print("Game screen loaded")
+    GrowWatchdog = love.timer.getTime()
+    ShrinkWatchdog = love.timer.getTime()
+    Mic, LastSecondData = Initialize_audio_input()
+    print("Game screen loaded")
+
     objects.setupGame(level_name)
     background.setup_background()
 
@@ -25,6 +32,20 @@ end
 -- function to run when love updates the game state, runs before drawing
 M.update = function(dt)
     movement.handle_movement(dt)
+    if love.timer.getTime() - GrowWatchdog > 2 * dt then
+        local amp = Process_audio(Mic, LastSecondData)
+        local new_bubble_boundary_circle = utils.expanded_bubble_boundary_circle(objects.bubble)
+        if utils.circle_inside_screen(new_bubble_boundary_circle) then
+            objects.bubble.growExpFactor(objects.bubble, amp)
+        end
+        GrowWatchdog = love.timer.getTime()
+    end
+
+    if love.timer.getTime() - ShrinkWatchdog > 4 * dt then
+        objects.bubble.shrink(objects.bubble)
+        ShrinkWatchdog = love.timer.getTime()
+    end
+
     background.update_background()
     sounds.update()
 
