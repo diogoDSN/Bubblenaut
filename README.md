@@ -42,3 +42,10 @@ just build
 This will create:
 * A MacOs app in `build/mac/Bubblenauts.app`;
 * A zip file in `build/windows/Bubblenauts.zip` which has an executable for windows;
+
+## Playing the Game
+Use `Space` to proceed through menus. During the game, use these controls:
+- `Shift` to move left
+- `Space` to move right
+- `Enter` to expand the bubble
+- `Down arrow` to shrink the bubble

@@ -55,6 +55,9 @@ M.draw = function()
     -- Background
     background.draw_backgroud()
 
+    -- level number
+    objects.draw_level()
+
     -- Finish line
     objects.draw_finish_line()
 
