@@ -1,13 +1,16 @@
 local objects = require("lua.screens.game_screen.components.objects")
+local configs = require("lua.screens.game_screen.config")
+
 
 local M = {}
 
 local function colides_with_spike(spike)
+    local forgiveness_ratio = configs.sizes.collision_forgiveness_ratio
 	local distance = math.sqrt(
 		math.pow(spike[1] - objects.bubble.center_x, 2) +
 		math.pow(spike[2] - objects.bubble.center_y, 2)
 	)
-	return distance < objects.bubble.radius + objects.spike_radius
+	return distance < objects.bubble.radius + objects.spike_radius * forgiveness_ratio
 end
 
 local function colides_with_little_girl()

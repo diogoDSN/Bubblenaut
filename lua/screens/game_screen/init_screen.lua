@@ -18,7 +18,7 @@ M.load = function(level_name)
     M.beamer = router.new_beamer(
         "game_over_screen",
         0.3,
-		level_name
+        level_name
     )
 end
 
