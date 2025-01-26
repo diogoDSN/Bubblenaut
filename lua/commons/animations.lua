@@ -4,7 +4,7 @@ local M = {}
 local animation = {}
 
 --- Function that should be called at every screen draw
----@overload fun(x: number, y:number, scale_x:number, scale_y:number)
+---@overload fun(self: animation, x: number, y:number, scale_x:number, scale_y:number)
 function animation:draw() end
 
 --- Function that should be called at every screen update with a valid

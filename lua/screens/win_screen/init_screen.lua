@@ -6,13 +6,22 @@ local buttons = {}
 
 local beamer
 
-M.load = function()
+M.load = function(level_name)
     print("Win screen loaded")
 
-    beamer = router.new_beamer(
-        "menu_screen",
-        0.2
-    )
+	local level = require("lua.screens.game_screen.levels." .. level_name)
+	if level.next_level ~= nil then
+		beamer = router.new_beamer(
+			"game_screen",
+			0.2,
+			level.next_level
+		)
+	else
+		beamer = router.new_beamer(
+			"menu_screen",
+			0.2
+		)
+	end
 
     M.background = love.graphics.newImage("archive/win-background.png")
 end
@@ -59,6 +68,9 @@ M.update = function(dt)
         beamer:activate()
     end
 
+    if love.keyboard.isDown("escape") or love.keyboard.isDown("q") then
+        love.event.quit()
+    end
     if love.mouse.isDown(1) then
         local x, y = love.mouse.getPosition()
         x = x * conf.gameWidth / love.graphics.getWidth()
@@ -70,12 +82,7 @@ M.update = function(dt)
         end
     end
 
-    local next_screen = beamer:update(dt)
-    if next_screen ~= nil then
-        return next_screen
-    end
-
-    return nil
+    return beamer:update(dt)
 end
 
 return M

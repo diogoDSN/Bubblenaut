@@ -22,11 +22,22 @@ local NilScreen = {
 }
 
 M.setScreen = function(screenName)
+	print(screenName)
 	local newScreen = M.screens[screenName]
 	if newScreen == nil then
 		newScreen = NilScreen
 	end
 	M.current_screen = newScreen
+end
+
+M.current_level = "level_1"
+
+M.setCurrentLevel = function(level_name)
+	M.current_level = level_name
+end
+
+M.getCurrentLevel = function()
+	return M.current_level
 end
 
 return M

@@ -12,18 +12,20 @@ local router = require("lua.commons.router")
 local M = {}
 
 -- runs once when opening the game screen
-M.load = function()
-    objects.setupGame()
+M.load = function(level_name)
+    print("Game screen loaded")
     GrowWatchdog = love.timer.getTime()
     ShrinkWatchdog = love.timer.getTime()
     Mic, LastSecondData = Initialize_audio_input()
     print("Game screen loaded")
 
+    objects.setupGame(level_name)
     background.setup_background()
 
     M.beamer = router.new_beamer(
         "game_over_screen",
-        0.3
+        0.3,
+        level_name
     )
 end
 
@@ -48,6 +50,7 @@ M.update = function(dt)
     sounds.update()
 
     objects.update_bubble_animation(dt)
+    objects.update_little_girl_state(dt)
 
     if colisions.applyColisions() then
         objects.game_state = "game_over_screen"
@@ -59,10 +62,7 @@ M.update = function(dt)
         M.beamer:activate(objects.game_state)
     end
 
-    local next_screen = M.beamer:update(dt)
-    if next_screen ~= nil then
-        return next_screen
-    end
+    return M.beamer:update(dt)
 end
 
 -- function to run when love draws the game screen
@@ -84,6 +84,9 @@ M.draw = function()
 
     -- Obstacles
     objects.draw_obstacles()
+
+    -- And the little girl
+    objects.draw_little_girl()
 end
 
 M.keypressed = function(key)

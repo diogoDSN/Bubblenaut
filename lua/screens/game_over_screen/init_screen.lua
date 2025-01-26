@@ -53,10 +53,14 @@ M.update = function(dt)
         pop_animation:start()
     end
 
-    local next_screen = beamer:update(dt)
-    if next_screen ~= nil then
-        return next_screen
+    if love.keyboard.isDown("m") then
+        beamer:activate("menu_screen")
     end
+
+    if love.keyboard.isDown("escape") or love.keyboard.isDown("q") then
+        love.event.quit()
+    end
+
 
     game_over_sound.countdown = game_over_sound.countdown - dt
     if game_over_sound.countdown < 0 and not game_over_sound.track:isPlaying() and not game_over_sound.played then
@@ -66,7 +70,7 @@ M.update = function(dt)
 
     pop_animation:update(dt)
 
-    return nil
+    return beamer:update(dt)
 end
 
 return M

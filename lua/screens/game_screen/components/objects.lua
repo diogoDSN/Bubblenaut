@@ -14,6 +14,12 @@ M.bubble = {
     sideways_movement_locked = false,
 }
 
+M.little_girl = {
+    pos_y = conf.gameHeight - 10,
+    pos_x = conf.gameWidth / 2,
+    target_x = conf.gameWidth / 2,
+}
+
 function M.bubble.growExpFactor(self, expansion_factor)
     local step_increase_factor = configs.steps.step_increase_factor
 
@@ -108,9 +114,45 @@ M.draw_finish_line = function()
     )
 end
 
+M.draw_little_girl = function()
+    love.graphics.draw(
+        M.little_girl_sprite,
+        M.little_girl.pos_x,
+        M.little_girl.pos_y
+    )
+end
+
+-- make the little girl hand go after the bubble with certain speeds
+M.update_little_girl_state = function(dt)
+    M.little_girl.target_x = M.bubble.center_x - M.little_girl.width / 2
+    local max_displacement = M.little_girl.target_x - M.little_girl.pos_x
+
+    if dt * configs.little_girl.h_speed_ratio >= math.abs(max_displacement) then
+        M.little_girl.pos_x = M.little_girl.pos_x + max_displacement
+    elseif max_displacement < 0 then
+        M.little_girl.pos_x = M.little_girl.pos_x - dt * configs.little_girl.h_speed_ratio
+    elseif max_displacement > 0 then
+        M.little_girl.pos_x = M.little_girl.pos_x + dt * configs.little_girl.h_speed_ratio
+    end
+
+    -- the objective here would be to make it so that the speed of the hand is inverse
+    -- to the radius of the bubble (i.e., such that it seems we're getting faster away from
+    -- the hand), and add a threshold in which we assume the speed of the hand is slower than
+    -- the bubble (i.e., invert position sum)
+    local new_y = M.little_girl.pos_y -
+        configs.little_girl.v_speed_ratio *
+        dt *
+        (configs.little_girl.v_speed_threshold - M.bubble.radius) /
+        M.bubble.radius
+    if new_y > conf.gameHeight - 10 then
+        new_y = conf.gameHeight - 10
+    end
+    M.little_girl.pos_y = new_y
+end
+
 local bubble_y_offset = conf.gameHeight / 5
 
-M.setupGame = function()
+M.setupGame = function(level_name)
     M.bubble.sprite = love.graphics.newImage("archive/bubble_sprites.png")
     M.spike_sprite = love.graphics.newImage("archive/spike.png")
 
@@ -120,6 +162,11 @@ M.setupGame = function()
     M.spike_pivot_y = M.spike_sprite:getHeight() / 2
 
     M.finish_line_sprite = love.graphics.newImage("archive/fence.png")
+    M.little_girl_sprite = love.graphics.newImage("archive/girl.png")
+    M.little_girl.width = M.little_girl_sprite:getWidth()
+    M.little_girl.pos_y = conf.gameHeight - 10
+    M.little_girl.pos_x = conf.gameWidth / 2
+    M.little_girl.target_x = conf.gameWidth / 2
 
 
     M.bubble.center_x = conf.gameWidth / 2
@@ -153,14 +200,12 @@ M.setupGame = function()
         sound_sources.pop_cut                 -- sound
     )
 
-    M.obstacles = {
-        -- {x, y} coordinates relative to the whole level
-        { 1 * M.spike_radius,  -M.spike_radius },
-        { 13 * M.spike_radius, -5 * M.spike_radius },
-        { 7 * M.spike_radius,  -10 * M.spike_radius }
-    }
+    local level = require("lua.screens.game_screen.levels." .. level_name)
+    level.load_level(M.spike_radius)
 
-    M.finish_line = -20 * M.spike_radius
+    M.obstacles = level.obstacles
+    M.finish_line = level.finish_line
+
     M.game_state = ""
 end
 
