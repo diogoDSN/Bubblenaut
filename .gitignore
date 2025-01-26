@@ -43,3 +43,5 @@ luac.out
 
 # macOS system files
 .DS_Store
+
+build/

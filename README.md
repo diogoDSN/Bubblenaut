@@ -29,3 +29,12 @@ This is handled by the `push` library. The game is designed to run at a resoluti
 - Game Screen
 - Game Over Screen
 - Win Screen
+
+## Building
+
+To build a game for all systems use just with the target:
+```sh
+just build
+```
+This will create:
+* A MacOs app in `build/mac/Bubblenauts.app`
