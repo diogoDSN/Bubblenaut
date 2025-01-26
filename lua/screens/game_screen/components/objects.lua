@@ -73,6 +73,7 @@ M.draw_level = function()
         end
     end
     local level_number = string.sub(M.level_name, underscore_index + 1, string.len(M.level_name))
+    love.graphics.setFont(love.graphics.newFont(15))
     love.graphics.print("Level: " .. level_number, 0, 0)
 end
 
