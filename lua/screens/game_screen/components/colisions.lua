@@ -18,13 +18,14 @@ local function colides_with_little_girl()
 end
 
 M.applyColisions = function()
-	for _, spike in ipairs(objects.obstacles) do
-		if colides_with_spike(spike) then
-			return true
-		end
-	end
-
-	return colides_with_little_girl()
+	return false
+	-- for _, spike in ipairs(objects.obstacles) do
+	-- 	if colides_with_spike(spike) then
+	-- 		return true
+	-- 	end
+	-- end
+	--
+	-- return colides_with_little_girl()
 end
 
 

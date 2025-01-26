@@ -10,15 +10,15 @@ local router = require("lua.commons.router")
 local M = {}
 
 -- runs once when opening the game screen
-M.load = function()
+M.load = function(level_name)
     print("Game screen loaded")
-
-    objects.setupGame()
+    objects.setupGame(level_name)
     background.setup_background()
 
     M.beamer = router.new_beamer(
         "game_over_screen",
-        0.3
+        0.3,
+		level_name
     )
 end
 
