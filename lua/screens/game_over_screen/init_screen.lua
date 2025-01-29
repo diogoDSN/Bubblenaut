@@ -2,6 +2,7 @@ local sounds = require("lua.commons.sound_sources")
 local animations = require("lua.commons.animations")
 local router = require("lua.commons.router")
 local conf = require("conf")
+local button = require("lua.widgets.button")
 
 local beamer
 
@@ -44,38 +45,41 @@ M.load = function()
     )
 end
 
-local function newButton(id, x, y, width, height, onClick)
-    return {
-        id = id,
-        x = x,
-        y = y,
-        width = width,
-        height = height,
-        onClick = onClick
-    }
-end
-
-table.insert(buttons, newButton("play", 144, 413, 219, 84, function()
-    if conf.debug then
-        print("Play button clicked")
+table.insert(buttons, button.new_button(
+    219, 84,
+    144, 413, 
+    "PLAY",
+    {r = 1, g = 1, b = 1},      --button is blue by default 
+    {r = 0.2, g = 0.2, b = 0.4},
+    function()
+        if conf.debug then
+            print("Start button clicked")
+        end
+        beamer:activate()
+        pop_animation:start()
     end
-    beamer:activate()
-    pop_animation:start()
-end))
+))
 
-table.insert(buttons, newButton("quit", 144, 517, 219, 84, function()
-    if conf.debug then
-        print("Quit button clicked")
+table.insert(buttons, button.new_button(
+    219, 84,
+    144, 517, 
+    "MENU",
+    {r = 1, g = 1, b = 1},      --button is blue by default 
+    {r = 0.2, g = 0.2, b = 0.4},
+    function()
+        if conf.debug then
+            print("Quit button clicked")
+        end
+        beamer:activate("menu_screen")
     end
-    beamer:activate("menu_screen")
-end))
+))
 
 M.draw = function()
     love.graphics.draw(M.background, 0, 0)
+    for _, btn in ipairs(buttons) do
+        btn:draw()
+    end
     if conf.debug then
-        for _, btn in ipairs(buttons) do
-            love.graphics.rectangle("line", btn.x, btn.y, btn.width, btn.height)
-        end
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.setFont(love.graphics.newFont(40))
         love.graphics.print(screen_name, 10, 10)
@@ -91,14 +95,16 @@ M.update = function(dt)
         print(x, y)
     end
 
-    if love.mouse.isDown(1) then
-        local x, y = love.mouse.getPosition()
-        x = x * conf.gameWidth / love.graphics.getWidth()
-        y = y * conf.gameHeight / love.graphics.getHeight()
-        for _, btn in ipairs(buttons) do
-            if x > btn.x and x < btn.x + btn.width and y > btn.y and y < btn.y + btn.height then
-                btn.onClick()
-            end
+    local x, y = love.mouse.getPosition()
+
+    x = x * conf.gameWidth / love.graphics.getWidth()
+    y = y * conf.gameHeight / love.graphics.getHeight()
+
+    for _, btn in ipairs(buttons) do
+        if love.mouse.isDown(1) then
+            btn:pressed(x, y)
+        else
+            btn:hover(x, y)
         end
     end
 
