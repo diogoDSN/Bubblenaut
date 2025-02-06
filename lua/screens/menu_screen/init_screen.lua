@@ -1,9 +1,11 @@
 local router = require("lua.commons.router")
 local conf = require "conf"
 local configs = require("lua.screens.game_screen.config")
+local button = require("lua.widgets.button")
 
 local M = {}
 local buttons = {}
+local test_button = {}
 
 local beamer
 
@@ -20,38 +22,40 @@ M.load = function()
     M.background = love.graphics.newImage("archive/menu-background.png")
 end
 
-local function newButton(id, x, y, width, height, onClick)
-    return {
-        id = id,
-        x = x,
-        y = y,
-        width = width,
-        height = height,
-        onClick = onClick
-    }
-end
-
-table.insert(buttons, newButton("start", 60, 260, 390, 150, function()
-    if conf.debug then
-        print("Start button clicked")
+table.insert(buttons, button.new_button(
+    400, 160,
+    60, 260, 
+    "START",
+    {r = 1, g = 1, b = 1},      --button is blue by default 
+    {r = 0.2, g = 0.2, b = 0.4},
+    function()
+        if conf.debug then
+            print("Start button clicked")
+        end
+        beamer:activate()
     end
-    beamer:activate()
-end))
+))
 
-table.insert(buttons, newButton("quit", 60, 446, 390, 150, function()
-    if conf.debug then
-        print("Quit button clicked")
+table.insert(buttons, button.new_button(
+    400, 160,
+    60, 446, 
+    "QUIT",
+    {r = 1, g = 1, b = 1},      --button is blue by default 
+    {r = 0.2, g = 0.2, b = 0.4},
+    function()
+        if conf.debug then
+            print("Quit button clicked")
+        end
+        love.event.quit()
     end
-    love.event.quit()
-end))
-
+))
 
 M.draw = function()
     love.graphics.draw(M.background, 0, 0)
+    for _, btn in ipairs(buttons) do
+        btn:draw()
+    end
     if conf.debug then
-        for _, btn in ipairs(buttons) do
-            love.graphics.rectangle("line", btn.x, btn.y, btn.width, btn.height)
-        end
         love.graphics.setColor(1, 1, 1, 1)
         love.graphics.setFont(love.graphics.newFont(40))
         love.graphics.print("Menu screen", 10, 10)
@@ -83,15 +87,17 @@ M.update = function(dt)
     if love.keyboard.isDown("escape") or love.keyboard.isDown("q") then
         love.event.quit()
     end
+    
+    local x, y = love.mouse.getPosition()
 
-    if love.mouse.isDown(1) then
-        local x, y = love.mouse.getPosition()
-        x = x * conf.gameWidth / love.graphics.getWidth()
-        y = y * conf.gameHeight / love.graphics.getHeight()
-        for _, btn in ipairs(buttons) do
-            if x > btn.x and x < btn.x + btn.width and y > btn.y and y < btn.y + btn.height then
-                btn.onClick()
-            end
+    x = x * conf.gameWidth / love.graphics.getWidth()
+    y = y * conf.gameHeight / love.graphics.getHeight()
+
+    for _, btn in ipairs(buttons) do
+        if love.mouse.isDown(1) then
+            btn:pressed(x, y)
+        else
+            btn:hover(x, y)
         end
     end
 
